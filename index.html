@@ -1,0 +1,2960 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>TradeGecko API Documentation</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>TradeGecko</h1>
+        <p></p>
+
+        <p class="view"><a href="https://github.com/tradegecko/tradegecko">View the Project on GitHub <small>tradegecko/tradegecko</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/tradegecko/tradegecko/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/tradegecko/tradegecko/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/tradegecko/tradegecko">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h2>TradeGecko API</h2>
+
+<hr><h3>API Endpoint</h3>
+
+<pre><code>https://api.tradegecko.com/
+</code></pre>
+
+<h3>Versioning</h3>
+
+<pre><code>Header: &lt;Accept: application/vnd.tradegecko.v1+json&gt;
+</code></pre>
+
+<h2>Creating an application</h2>
+
+<hr><p>In order to use the TradeGecko API, you must first have a TradeGecko
+  account, you can register a new application at <a href="http://go.tradegecko.com/oauth/applications">http://go.tradegecko.com/oauth/applications</a>.
+  After successfully creating a new application, you will be given a set of 2
+  unique keys: </p>
+
+<ul>
+<li>APPLICATION ID</li>
+<li>
+<p>APPLICATION SECRET</p>
+
+<p>These keys are needed in order to obtain an access token to make the API calls.</p>
+
+<p>TradeGecko is based on <a href="http://tools.ietf.org/html/draft-ietf-oauth-v2-22">version 22 of the OAuth 2.0 specification</a>.</p>
+
+<p>If you are already familiar with OAuth, then all you really need to know
+about are the two authentication endpoints. The authorization endpoint
+and the token request endpoint.</p>
+
+<p>These endpoints are:</p>
+</li>
+<li><p><strong><a href="https://api.tradegecko.com/oauth/authorize">https://api.tradegecko.com/oauth/authorize</a></strong></p></li>
+<li><p><strong><a href="https://api.tradegecko.com/oauth/token">https://api.tradegecko.com/oauth/token</a></strong></p></li>
+</ul><h2>Getting an Authorization Code</h2>
+
+<hr><p>An authorization code is the key used to retrieve the access token.
+   In order to acquire an authorization code, you need to send your user
+   to the authorization endpoint.</p>
+
+<p><code>https://api.tradegecko.com/oauth/authorize?response_type=code&amp;client_id=&lt;CLIENT_ID&gt;&amp;redirect_uri=&lt;REDIRECT_URI&gt;</code></p>
+
+<p><code>CLIENT_ID</code> should be set to your application ID. <code>response_type</code> should
+  always be set to “code”. <code>REDIRECT_URI</code> should be set to the URL where
+  the user will be redirected back to after the request is authorized.</p>
+
+<p>Once the user has successfully authorized the application, she will be redirected to
+  the <code>redirect_uri</code> with the authorization code as a query parameter.</p>
+
+<p>e.g. <code>https://my.application.com/auth/app/callback?code=12bc6909c57aaa930</code></p>
+
+<h2>Requesting an access token</h2>
+
+<hr><p>The access token is a unique key used to make requests to the API. In
+   order to get an access token, user must make a POST request to
+   <code>https://api.tradegecko.com/oauth/token</code> with the <code>client_id</code>,
+   <code>client_secret</code>, <code>redirect_uri</code>, <code>code</code> and <code>grant_type</code> as parameters.
+   <code>code</code> must match the authorization code returned by the
+   authorization endpoint and <code>grant_type</code> must be set to
+   <code>authorization_code</code></p>
+
+<h5>Sample request (cURL)</h5>
+
+<pre><code>  curl -H "Content-type: application/json" -X POST http://api.tradegecko.com/oauth/token
+  -d '{"client_id": "d38abea2ef61c916a1e131de9fd04146579578f",
+  "client_secret":"2kj2kd07e197f9942ca1876d759e9e9c45bdcdc",
+  "redirect_uri": "https://my.application.com/auth/app/callback",
+  "code": "c3d11b23992f53d748c7b25148da1ac4d838919",
+  "grant_type": "authorization_code"}'
+</code></pre>
+
+<h5>Sample response</h5>
+
+<pre><code>  {
+    "access_token": "57ed301af04bf35b40f255feb5ef469ab2f046aff14",
+    "expires_in": 7200,
+    "refresh_token": "026b343de07818b3ffebfb3001eff9a00aea43da0 ",
+    "scope": "public",
+    "token_type": "bearer"
+  }
+</code></pre>
+
+<h2>Making an API Call</h2>
+
+<hr><p>The TradeGecko API is entirely JSON based. In order to make an authenticated call
+   to the API, you must include your access token with the call.
+   OAuth2 uses a BEARER token that is passed along in an Authorization
+   header.</p>
+
+<h5>Sample request (cURL)</h5>
+
+<pre><code>  curl -H "Authorization: Bearer &lt;ACCESS_TOKEN&gt;" http://api.tradegecko.com/accounts
+</code></pre>
+
+<h2>Pagination</h2>
+
+<hr><p>The TradeGecko API enables pagination by allowing users to include 'limit'
+   and 'page' parameters on GET requests to index pages. The default
+   limit is 100 items.</p>
+
+<h5>Sample request (cURL)</h5>
+
+<pre><code>  curl -H "Authorization: Bearer &lt;ACCESS_TOKEN&gt;" http://api.tradegecko.com/users?limit=20&amp;page=1
+</code></pre>
+
+<h2>Filters</h2>
+
+<hr><p>The API also allows filtering of records by passing query parameters.
+   These are the filters currently allowed by the API (where relevant):</p>
+
+<ul>
+<li>ids</li>
+<li>company_id</li>
+<li>order_id</li>
+<li>purchase_order_id</li>
+<li>stock_adjustment_id</li>
+<li>status</li>
+<li>since</li>
+</ul><h5>Sample request (cURL)</h5>
+
+<pre><code>  curl -H "Authorization: Bearer &lt;ACCESS_TOKEN&gt;" http://api.tradegecko.com/users?ids[]=1&amp;ids[]=2
+  curl -H "Authorization: Bearer &lt;ACCESS_TOKEN&gt;" http://api.tradegecko.com/addresses?company_id=1
+</code></pre>
+
+<h2>Address</h2>
+
+<hr><p>This is an object representing an address of a company. A company can
+  have multiple addresses but an address object belongs to only one
+  company.</p>
+
+<table>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>Integer</td>
+<td>A unique identifier for the address</td>
+</tr>
+<tr>
+<td><strong>company_id</strong></td>
+<td>Integer</td>
+<td>The company id where the address belongs.</td>
+</tr>
+<tr>
+<td><strong>city</strong></td>
+<td>String</td>
+<td>The primary country where company is located</td>
+</tr>
+<tr>
+<td><strong>country</strong></td>
+<td>String</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>label</strong></td>
+<td>String</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>state</strong></td>
+<td>String</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>address1</strong></td>
+<td>String</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>address2</strong></td>
+<td>String</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>suburb</strong></td>
+<td>String</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>zip_code</strong></td>
+<td>String</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>phone_number</strong></td>
+<td>String</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>email</strong></td>
+<td>String</td>
+<td></td>
+</tr>
+</table><h4>Retrieve list of addresses</h4>
+
+<p>Retrieves list of addresses for all companies or addresses for a
+certain company.</p>
+
+<h6>Request:</h6>
+
+<table>
+<tr>
+<th>Method</th>
+<th>Request URL</th>
+</tr>
+<tr>
+<td><strong>GET</strong></td>
+<td><em><a href="https://api.tradegecko.com/addresses/">https://api.tradegecko.com/addresses/</a></em></td>
+</tr>
+</table><h5>Sample Request</h5>
+
+<pre><code>  curl -X GET -H "Content-type: application/json" -H "Authorization: Bearer &lt;ACCESS_TOKEN&gt;"
+  https://api.tradegecko.com/addresses/
+</code></pre>
+
+<h5>Sample Response</h5>
+
+<pre><code>  {
+    "addresses": [
+        {
+            "address1": "14 York St",
+            "address2": null,
+            "city": "Auckland",
+            "company_id": 3,
+            "country": "NZ",
+            "email": null,
+            "id": 3,
+            "label": "Shipping",
+            "phone_number": null,
+            "state": "",
+            "suburb": "Parnell",
+            "zip_code": "123456"
+        },
+        {
+            "address1": "7 Silk Road",
+            "address2": null,
+            "city": "Auckland",
+            "company_id": 2,
+            "country": "NZL",
+            "email": null,
+            "id": 42,
+            "label": "Billing",
+            "phone_number": null,
+            "state": "",
+            "suburb": "hernebay",
+            "zip_code": "1022"
+        },
+  }
+</code></pre>
+
+<h4>Retrieve a particular address</h4>
+
+<h6>Request:</h6>
+
+<table>
+<tr>
+<th>Method</th>
+<th>Request URL</th>
+</tr>
+<tr>
+<td><strong>GET</strong></td>
+<td><em><a href="https://api.tradegecko.com/addresses/%7BADDRESS_ID%7D/">https://api.tradegecko.com/addresses/{ADDRESS_ID}/</a></em></td>
+</tr>
+</table><h5>Sample Request</h5>
+
+<pre><code>  curl -X GET -H "Content-type: application/json" -H "Authorization: Bearer &lt;ACCESS_TOKEN&gt;"
+  https://api.tradegecko.com/addresses/1
+</code></pre>
+
+<h5>Sample Response</h5>
+
+<pre><code>  {
+      "address": {
+          "address1": "14a York St",
+          "address2": null,
+          "city": "Auckland",
+          "company_id": 3,
+          "country": "NZ",
+          "email": null,
+          "id": 3,
+          "label": "Shipping",
+          "phone_number": null,
+          "state": "",
+          "suburb": "Parnell",
+          "zip_code": "123456"
+      }
+  }
+</code></pre>
+
+<h4>Create a new address</h4>
+
+<h6>Request:</h6>
+
+<table>
+<tr>
+<th>Method</th>
+<th>Request URL</th>
+</tr>
+<tr>
+<td><strong>POST</strong></td>
+<td><em><a href="https://api.tradegecko.com/addresses/">https://api.tradegecko.com/addresses/</a></em></td>
+</tr>
+</table><h6>Arguments:</h6>
+
+<pre><code>  address:
+    company_id:   required
+    label:        required
+    address1:     required
+    address2:     optional
+    city:         optional
+    country:      optional
+    zip_code:     optional
+    suburb:       optional
+    state:        optional
+    phone_number: optional
+    email:        optional
+</code></pre>
+
+<h5>Sample Request</h5>
+
+<pre><code>  curl -X POST -H "Content-type: application/json" -H "Authorization: Bearer &lt;ACCESS_TOKEN&gt;"
+  https://api.tradegecko.com/addresses/ -d '{"address":{"company_id": 1, "label": "Main Office",
+  "address1": "12 Park Ave"}}'
+</code></pre>
+
+<h5>Sample Response</h5>
+
+<pre><code>  {
+      "address": {
+          "address1": "14a York St",
+          "address2": null,
+          "city": "Auckland",
+          "company_id": 3,
+          "country": "NZ",
+          "email": null,
+          "id": 3,
+          "label": "Shipping",
+          "phone_number": null,
+          "state": "",
+          "suburb": "Parnell",
+          "zip_code": "123456"
+      }
+  }
+</code></pre>
+
+<h4>Update an address</h4>
+
+<h6>Request:</h6>
+
+<table>
+<tr>
+<th>Method</th>
+<th>Request URL</th>
+</tr>
+<tr>
+<td><strong>PUT</strong></td>
+<td><em><a href="https://api.tradegecko.com/addresses/%7BADDRESS_ID%7D/">https://api.tradegecko.com/addresses/{ADDRESS_ID}/</a></em></td>
+</tr>
+</table><h6>Arguments:</h6>
+
+<pre><code>  address:
+    label:        optional
+    address1:     optional
+    address2:     optional
+    city:         optional
+    country:      optional
+    zip_code:     optional
+    suburb:       optional
+    state:        optional
+    phone_number: optional
+    email:        optional
+</code></pre>
+
+<h5>Sample Request</h5>
+
+<pre><code>  curl -X PUT -H "Content-type: application/json" -H "Authorization: Bearer &lt;ACCESS_TOKEN&gt;"
+  https://api.tradegecko.com/addresses/1 -d '{"address":{"city": "Singapore", "country": "SG"}}'
+</code></pre>
+
+<h6>Return:</h6>
+
+<pre><code>  Returns 204 status when the address gets updated successfully.
+</code></pre>
+
+<h4>Delete an address</h4>
+
+<h6>Request:</h6>
+
+<table>
+<tr>
+<th>Method</th>
+<th>Request URL</th>
+</tr>
+<tr>
+<td><strong>DELETE</strong></td>
+<td><em><a href="https://api.tradegecko.com/addresses/%7BADDRESS_ID%7D/">https://api.tradegecko.com/addresses/{ADDRESS_ID}/</a></em></td>
+</tr>
+</table><h5>Sample Request</h5>
+
+<pre><code>  curl -X DELETE -H "Content-type: application/json" -H "Authorization: Bearer &lt;ACCESS_TOKEN&gt;"
+  https://api.tradegecko.com/addresses/1
+</code></pre>
+
+<h6>Return:</h6>
+
+<pre><code>  Returns 204 status when the address gets deleted successfully.
+</code></pre>
+
+<h2>Company</h2>
+
+<hr><p>This is an object representing a company.</p>
+
+<table>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>Integer</td>
+<td>A unique identifier for the company</td>
+</tr>
+<tr>
+<td><strong>name</strong></td>
+<td>String</td>
+<td>The name of the company</td>
+</tr>
+<tr>
+<td><strong>description</strong></td>
+<td>String</td>
+<td>A brief description of the company</td>
+</tr>
+<tr>
+<td><strong>phone_number</strong></td>
+<td>String</td>
+<td>The phone number of the company</td>
+</tr>
+<tr>
+<td><strong>status</strong></td>
+<td>String</td>
+<td>Tells whether the company is 'active' or 'archived'</td>
+</tr>
+<tr>
+<td><strong>email</strong></td>
+<td>String</td>
+<td>Primary email of the company</td>
+</tr>
+<tr>
+<td><strong>website</strong></td>
+<td>String</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>company_type</strong></td>
+<td>String</td>
+<td>Can be 'business', 'vendor' or 'consumer'</td>
+</tr>
+<tr>
+<td><strong>company_code</strong></td>
+<td>String</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>fax</strong></td>
+<td>String</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>default_tax_rate</strong></td>
+<td>Float</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>default_discount_rate</strong></td>
+<td>Float</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>address_ids</strong></td>
+<td>Array</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>contact_ids</strong></td>
+<td>Array</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>note_ids</strong></td>
+<td>Array</td>
+<td></td>
+</tr>
+</table><h4>Retrieve list of companies</h4>
+
+<p>Retrieve a list of all companies with 'active' status.</p>
+
+<h6>Request:</h6>
+
+<table>
+<tr>
+<th>Method</th>
+<th>Request URL</th>
+</tr>
+<tr>
+<td><strong>GET</strong></td>
+<td><em><a href="https://api.tradegecko.com/companies/">https://api.tradegecko.com/companies/</a></em></td>
+</tr>
+</table><h5>Sample Request</h5>
+
+<pre><code>  curl -X GET -H "Content-type: application/json" -H "Authorization: Bearer &lt;ACCESS_TOKEN&gt;"
+  https://api.tradegecko.com/companies/
+</code></pre>
+
+<h5>Sample response</h5>
+
+<pre><code>  {
+      "companies": [
+          {
+              "address_ids": [ 1, 2 ],
+              "company_code": "XYZ",
+              "company_type": "vendor",
+              "contact_ids": [ 33, 35 ],
+              "default_discount_rate": null,
+              "default_tax_rate": null,
+              "description": null,
+              "email": "xyz@xyzshirts.sg",
+              "fax": null,
+              "id": 369,
+              "name": "XYZ Shirts Pte Ltd",
+              "note_ids": [ 6 ],
+              "phone_number": "+65 8111 1111",
+              "status": "active",
+              "website": "http://www.xyzshirts.sg"
+          },
+          {
+              "address_ids": [ 376 ],
+              "company_code": "BOT",
+              "company_type": "business",
+              "contact_ids": [ 366 ],
+              "default_discount_rate": null,
+              "default_tax_rate": null,
+              "description": null,
+              "email": "info@theboutique.sg",
+              "fax": null,
+              "id": 423,
+              "name": "The Boutique",
+              "note_ids": [],
+              "phone_number": "+65 7777 7777",
+              "status": "active",
+              "website": "http://www.theboutique.sg"
+          }
+  }
+</code></pre>
+
+<h4>Retrieve a specific company</h4>
+
+<h6>Request:</h6>
+
+<table>
+<tr>
+<th>Method</th>
+<th>Request URL</th>
+</tr>
+<tr>
+<td><strong>GET</strong></td>
+<td><em><a href="https://api.tradegecko.com/companies/%7BCOMPANY_ID%7D/">https://api.tradegecko.com/companies/{COMPANY_ID}/</a></em></td>
+</tr>
+</table><h5>Sample Request</h5>
+
+<pre><code>  curl -X GET -H "Content-type: application/json" -H "Authorization: Bearer &lt;ACCESS_TOKEN&gt;"
+  https://api.tradegecko.com/companies/1
+</code></pre>
+
+<h5>Sample response</h5>
+
+<pre><code>  {
+      "company": {
+          "address_ids": [ 326, 327 ],
+          "company_code": "XYZ",
+          "company_type": "vendor",
+          "contact_ids": [ 335, 334 ],
+          "default_discount_rate": null,
+          "default_tax_rate": null,
+          "description": null,
+          "email": "xyz@xyzshirts.sg",
+          "fax": null,
+          "id": 369,
+          "name": "XYZ Shirts Pte Ltd",
+          "note_ids": [ 6 ],
+          "phone_number": "+65 8111 1111",
+          "status": "active",
+          "website": "http://www.xyzshirts.sg"
+      }
+  }
+</code></pre>
+
+<h4>Create a new company</h4>
+
+<h6>Request:</h6>
+
+<table>
+<tr>
+<th>Method</th>
+<th>Request URL</th>
+</tr>
+<tr>
+<td><strong>POST</strong></td>
+<td><em><a href="https://api.tradegecko.com/companies/">https://api.tradegecko.com/companies/</a></em></td>
+</tr>
+</table><h6>Arguments:</h6>
+
+<pre><code>  company:
+    name:                   required
+    email:                  optional
+    phone_number:           optional
+    website:                optional
+    company_type:           optional
+    online_id:              optional
+    company_code:           optional
+    fax:                    optional
+    default_tax_rate:       optional
+    default_discount_rate:  optional
+</code></pre>
+
+<h5>Sample Request</h5>
+
+<pre><code>  curl -X POST -H "Content-type: application/json" -H "Authorization: Bearer &lt;ACCESS_TOKEN&gt;"
+  https://api.tradegecko.com/companies/ -d '{"company":{"name":"Tradegecko Pte Ltd.",
+  "email": "info@tradegecko.com"}}'
+</code></pre>
+
+<h5>Sample response</h5>
+
+<pre><code>  {
+      "company": {
+          "address_ids": [ 326, 327 ],
+          "company_code": "XYZ",
+          "company_type": "vendor",
+          "contact_ids": [ 335, 334 ],
+          "default_discount_rate": null,
+          "default_tax_rate": null,
+          "description": null,
+          "email": "xyz@xyzshirts.sg",
+          "fax": null,
+          "id": 369,
+          "name": "XYZ Shirts Pte Ltd",
+          "note_ids": [ 6 ],
+          "phone_number": "+65 8111 1111",
+          "status": "active",
+          "website": "http://www.xyzshirts.sg"
+      }
+  }
+</code></pre>
+
+<h4>Update a company</h4>
+
+<h6>Request:</h6>
+
+<table>
+<tr>
+<th>Method</th>
+<th>Request URL</th>
+</tr>
+<tr>
+<td><strong>PUT</strong></td>
+<td><em><a href="https://api.tradegecko.com/companies/%7BCOMPANY_ID%7D/">https://api.tradegecko.com/companies/{COMPANY_ID}/</a></em></td>
+</tr>
+</table><h6>Arguments:</h6>
+
+<pre><code>  company:
+    name:                   optional
+    email:                  optional
+    phone_number:           optional
+    website:                optional
+    company_type:           optional
+    online_id:              optional
+    company_code:           optional
+    fax:                    optional
+    default_tax_rate:       optional
+    default_discount_rate:  optional
+</code></pre>
+
+<h5>Sample Request</h5>
+
+<pre><code>  curl -X PUT -H "Content-type: application/json" -H "Authorization: Bearer &lt;ACCESS_TOKEN&gt;"
+  https://api.tradegecko.com/companies/ -d '{"company":{"website": "http://tradegecko.com"}}'
+</code></pre>
+
+<h6>Return:</h6>
+
+<pre><code>  Returns 204 status when the company gets updated successfully.
+</code></pre>
+
+<h4>Delete a company</h4>
+
+<h6>Request:</h6>
+
+<table>
+<tr>
+<th>Method</th>
+<th>Request URL</th>
+</tr>
+<tr>
+<td><strong>DELETE</strong></td>
+<td><em><a href="https://api.tradegecko.com/companies/%7BCOMPANY_ID%7D/">https://api.tradegecko.com/companies/{COMPANY_ID}/</a></em></td>
+</tr>
+</table><h5>Sample Request</h5>
+
+<pre><code>  curl -X DELETE -H "Content-type: application/json" -H "Authorization: Bearer &lt;ACCESS_TOKEN&gt;"
+  https://api.tradegecko.com/companies/1
+</code></pre>
+
+<h6>Return:</h6>
+
+<pre><code>  Returns 204 status when the company gets deleted successfully.
+</code></pre>
+
+<h2>Contact</h2>
+
+<hr><p>This is an object representing a contact.</p>
+
+<table>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>Integer</td>
+<td>A unique identifier for the address</td>
+</tr>
+<tr>
+<td><strong>company_id</strong></td>
+<td>Integer</td>
+<td>The company id where the address belongs.</td>
+</tr>
+<tr>
+<td><strong>first_name</strong></td>
+<td>String</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>last_name</strong></td>
+<td>String</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>email</strong></td>
+<td>String</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>location</strong></td>
+<td>String</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>mobile</strong></td>
+<td>String</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>phone</strong></td>
+<td>String</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>fax</strong></td>
+<td>String</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>notes</strong></td>
+<td>String</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>position</strong></td>
+<td>String</td>
+<td></td>
+</tr>
+</table><h4>Retrieve list of contacts</h4>
+
+<h6>Request:</h6>
+
+<table>
+<tr>
+<th>Method</th>
+<th>Request URL</th>
+</tr>
+<tr>
+<td><strong>GET</strong></td>
+<td><em><a href="https://api.tradegecko.com/contacts/">https://api.tradegecko.com/contacts/</a></em></td>
+</tr>
+</table><h5>Sample Request</h5>
+
+<pre><code>  curl -X GET -H "Content-type: application/json" -H "Authorization: Bearer &lt;ACCESS_TOKEN&gt;"
+  https://api.tradegecko.com/contacts
+</code></pre>
+
+<h5>Sample response</h5>
+
+<pre><code>  {
+      "contacts": [
+          {
+              "company_id": 1,
+              "email": "john@myweb.sg",
+              "fax": null,
+              "first_name": "John",
+              "id": 335,
+              "last_name": "Doe",
+              "location": "Warehouse",
+              "mobile": "+65 9000 0000",
+              "notes": "",
+              "phone": "+65 8222 2222",
+              "position": "Warehouse Stock Coordinator"
+          },
+          {
+              "company_id": 1,
+              "email": "tom@myweb.sg",
+              "fax": null,
+              "first_name": "Tom",
+              "id": 334,
+              "last_name": "Smith",
+              "location": "Office",
+              "mobile": "+65 9999 0000",
+              "notes": "",
+              "phone": "+65 8111 1111",
+              "position": "Sales Manager"
+          },
+  }
+</code></pre>
+
+<h4>Retrieve a specific contact</h4>
+
+<h6>Request:</h6>
+
+<table>
+<tr>
+<th>Method</th>
+<th>Request URL</th>
+</tr>
+<tr>
+<td><strong>GET</strong></td>
+<td><em><a href="https://api.tradegecko.com/contacts/%7BCONTACT_ID%7D/">https://api.tradegecko.com/contacts/{CONTACT_ID}/</a></em></td>
+</tr>
+</table><h5>Sample Request</h5>
+
+<pre><code>  curl -X GET -H "Content-type: application/json" -H "Authorization: Bearer &lt;ACCESS_TOKEN&gt;"
+  https://api.tradegecko.com/contacts/1
+</code></pre>
+
+<h5>Sample response</h5>
+
+<pre><code>  {
+      "contact": {
+          "company_id": 31,
+          "email": "john@mywebsite.sg",
+          "fax": null,
+          "first_name": "John",
+          "id": 3,
+          "last_name": "Doe",
+          "location": "Warehouse",
+          "mobile": "+65 9000 0000",
+          "notes": "",
+          "phone": "+65 8222 2222",
+          "position": "Warehouse Stock Coordinator"
+      }
+  }
+</code></pre>
+
+<h4>Create a new contact</h4>
+
+<h6>Request:</h6>
+
+<table>
+<tr>
+<th>Method</th>
+<th>Request URL</th>
+</tr>
+<tr>
+<td><strong>POST</strong></td>
+<td><em><a href="https://api.tradegecko.com/contacts/">https://api.tradegecko.com/contacts/</a></em></td>
+</tr>
+</table><h6>Arguments</h6>
+
+<pre><code>  contact:
+    company_id: required
+    first_name: required
+    last_name:  required
+    email:      optional
+    location:   optional
+    mobile:     optional
+    phone:      optional
+    position:   optional
+    notes:      optional
+    fax:        optional
+</code></pre>
+
+<h5>Sample Request</h5>
+
+<pre><code>  curl -X POST -H "Content-type: application/json" -H "Authorization: Bearer &lt;ACCESS_TOKEN&gt;"
+  https://api.tradegecko.com/contacts/ -d '{"contact":{"company_id": 1, first_name: "John",
+  "last_name": "Gecko"}}'
+</code></pre>
+
+<h5>Sample response</h5>
+
+<pre><code>  {
+      "contact": {
+          "company_id": 31,
+          "email": "john@mywebsite.sg",
+          "fax": null,
+          "first_name": "John",
+          "id": 3,
+          "last_name": "Doe",
+          "location": "Warehouse",
+          "mobile": "+65 9000 0000",
+          "notes": "",
+          "phone": "+65 8222 2222",
+          "position": "Warehouse Stock Coordinator"
+      }
+  }
+</code></pre>
+
+<h4>Update a contact</h4>
+
+<h6>Request:</h6>
+
+<table>
+<tr>
+<th>Method</th>
+<th>Request URL</th>
+</tr>
+<tr>
+<td><strong>PUT</strong></td>
+<td><em><a href="https://api.tradegecko.com/contacts/%7BCONTACT_ID%7D/">https://api.tradegecko.com/contacts/{CONTACT_ID}/</a></em></td>
+</tr>
+</table><h6>Arguments</h6>
+
+<pre><code>  contact:
+    first_name: optional
+    last_name:  optional
+    email:      optional
+    location:   optional
+    mobile:     optional
+    phone:      optional
+    position:   optional
+    notes:      optional
+    fax:        optional
+</code></pre>
+
+<h5>Sample Request</h5>
+
+<pre><code>  curl -X PUT -H "Content-type: application/json" -H "Authorization: Bearer &lt;ACCESS_TOKEN&gt;"
+  https://api.tradegecko.com/contacts/1 -d '{"contact": { email: "john@mywebsite.sg",
+  "mobile": "+65 1234 456"}}'
+</code></pre>
+
+<h6>Return:</h6>
+
+<pre><code>  Returns 204 status when the contact gets updated successfully.
+</code></pre>
+
+<h4>Delete a contact</h4>
+
+<h6>Request:</h6>
+
+<table>
+<tr>
+<th>Method</th>
+<th>Request URL</th>
+</tr>
+<tr>
+<td><strong>DELETE</strong></td>
+<td><em><a href="https://api.tradegecko.com/contacts/%7BCONTACT_ID%7D/">https://api.tradegecko.com/contacts/{CONTACT_ID}/</a></em></td>
+</tr>
+</table><h5>Sample Request</h5>
+
+<pre><code>  curl -X DELETE -H "Content-type: application/json" -H "Authorization: Bearer &lt;ACCESS_TOKEN&gt;"
+  https://api.tradegecko.com/contacts/1
+</code></pre>
+
+<h6>Return:</h6>
+
+<pre><code>  Returns 204 status when the contact gets deleted successfully.
+</code></pre>
+
+<h2>Fulfillments</h2>
+
+<hr><p>This is an object representing a fulfillment.</p>
+
+<table>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>Integer</td>
+<td>A unique identifier for the address</td>
+</tr>
+<tr>
+<td><strong>order_id</strong></td>
+<td>Integer</td>
+<td>The company id where the address belongs.</td>
+</tr>
+<tr>
+<td><strong>status</strong></td>
+<td>String</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>shiped_at</strong></td>
+<td>String</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>received_at</strong></td>
+<td>String</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>delivery_type</strong></td>
+<td>String</td>
+<td>Could be 'Courier' or 'Pickup'</td>
+</tr>
+<tr>
+<td><strong>tracking_number</strong></td>
+<td>String</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>tracking_message</strong></td>
+<td>String</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>created_at</strong></td>
+<td>String</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>updated_at</strong></td>
+<td>String</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>order_line_item_ids</strong></td>
+<td>Array</td>
+<td></td>
+</tr>
+</table><h4>Retrieve list of fulfillments</h4>
+
+<h6>Request:</h6>
+
+<table>
+<tr>
+<th>Method</th>
+<th>Request URL</th>
+</tr>
+<tr>
+<td><strong>GET</strong></td>
+<td><em><a href="https://api.tradegecko.com/fulfillments/">https://api.tradegecko.com/fulfillments/</a></em></td>
+</tr>
+</table><h5>Sample Request</h5>
+
+<pre><code>  curl -X GET -H "Content-type: application/json" -H "Authorization: Bearer &lt;ACCESS_TOKEN&gt;"
+  https://api.tradegecko.com/fulfillments
+</code></pre>
+
+<h5>Sample response</h5>
+
+<pre><code>  {
+        "fulfillments": [
+          {
+              "created_at": "2013-01-18T03:09:36Z",
+              "delivery_type": "Courier",
+              "id": 350,
+              "order_id": 101,
+              "order_line_item_ids": [ 303, 304, 302 ],
+              "received_at": null,
+              "shipped_at": "2013-01-09T00:00:00Z",
+              "status": null,
+              "tracking_message": null,
+              "tracking_number": "65656",
+              "updated_at": "2013-01-18T03:09:36Z"
+          },
+          {
+              "created_at": "2013-01-18T03:09:35Z",
+              "delivery_type": "Pickup",
+              "id": 339,
+              "order_id": 33,
+              "order_line_item_ids": [ 46 ],
+              "received_at": "2012-12-04T00:00:00Z",
+              "shipped_at": "2012-12-06T03:06:32Z",
+              "status": null,
+              "tracking_message": null,
+              "tracking_number": null,
+              "updated_at": "2013-01-18T03:09:35Z"
+          }
+      ]
+  }
+</code></pre>
+
+<h4>Retrieve a specific fulfillment item</h4>
+
+<h6>Request:</h6>
+
+<table>
+<tr>
+<th>Method</th>
+<th>Request URL</th>
+</tr>
+<tr>
+<td><strong>GET</strong></td>
+<td><em><a href="https://api.tradegecko.com/fulfillments/%7BFULFILLMENT_ID%7D">https://api.tradegecko.com/fulfillments/{FULFILLMENT_ID}</a></em></td>
+</tr>
+</table><h5>Sample Request</h5>
+
+<pre><code>  curl -X GET -H "Content-type: application/json" -H "Authorization: Bearer &lt;ACCESS_TOKEN&gt;"
+  https://api.tradegecko.com/fulfillments/1
+</code></pre>
+
+<h5>Sample response</h5>
+
+<pre><code>  {
+      "fulfillment": {
+            "created_at": "2013-01-18T03:09:35Z",
+            "delivery_type": "Pickup",
+            "id": 1,
+            "order_id": 33,
+            "order_line_item_ids": [ 46 ],
+            "received_at": "2012-12-04T00:00:00Z",
+            "shipped_at": "2012-12-06T03:06:32Z",
+            "status": null,
+            "tracking_message": null,
+            "tracking_number": null,
+            "updated_at": "2013-01-18T03:09:35Z"
+        }
+  }
+</code></pre>
+
+<h4>Create a new fulfillment</h4>
+
+<table>
+<tr>
+<th>Method</th>
+<th>Request URL</th>
+</tr>
+<tr>
+<td><strong>POST</strong></td>
+<td><em><a href="https://api.tradegecko.com/fulfillments/">https://api.tradegecko.com/fulfillments/</a></em></td>
+</tr>
+</table><h6>Arguments:</h6>
+
+<pre><code>  order_id: required
+            Unique identifier for the order to be fulfilled
+  order_line_items: required
+                    An array of order line item ids to be fulfilled
+</code></pre>
+
+<h5>Sample Request</h5>
+
+<pre><code>  curl -X POST -H "Content-type: application/json" -H "Authorization: Bearer &lt;ACCESS_TOKEN&gt;"
+  https://api.tradegecko.com/fulfillments/ -d '{"fulfillment": {"order_id": 18,
+  "order_line_items": [{"id":28}, {"id":29}] }}'
+</code></pre>
+
+<h5>Sample response</h5>
+
+<pre><code>  {
+    order_line_items:[
+      {
+        id: 1,
+        order_id: 1,
+        variant_id:3,
+        fulfillment_id:1,
+        discount: nil,
+        quantity:"1.0",
+        price:"123.0",
+        tax_rate:"12.0",
+        freeform:false,
+        label: nil,
+        position:0,
+        image_url: nil
+      }],
+    fulfillment: {
+      "id":1,
+      "order_id":1,
+      "status":nil,
+      "shipped_at":"2013-05-20T02:20:34Z",
+      "received_at":"2013-05-20T02:20:29Z",
+      "delivery_type":"Pickup",
+      "tracking_number":nil,
+      "tracking_message":nil,
+      "created_at":"2013-05-20T02:20:34Z",
+      "updated_at":"2013-05-20T02:20:34Z",
+      "order_line_item_ids":[1]
+    }
+  }
+</code></pre>
+
+<h4>Update a fulfillment</h4>
+
+<table>
+<tr>
+<th>Method</th>
+<th>Request URL</th>
+</tr>
+<tr>
+<td><strong>PUT</strong></td>
+<td><em><a href="https://api.tradegecko.com/fulfillments/%7BFULFILLMENT_ID%7D">https://api.tradegecko.com/fulfillments/{FULFILLMENT_ID}</a></em></td>
+</tr>
+</table><h6>Arguments</h6>
+
+<pre><code>  fulfillments:
+    cc_tracking_email:   optional
+    delivery_type:       optional
+    received_at:         optional
+    send_tracking_email: optional
+    shipped_at:          optional
+    tracking_message:    optional
+    tracking_number:     optional
+</code></pre>
+
+<h5>Sample Request</h5>
+
+<pre><code>  curl -X PUT -H "Content-type: application/json" -H "Authorization: Bearer &lt;ACCESS_TOKEN&gt;"
+  https://api.tradegecko.com/fulfillments/1 -d '{"fulfillment": {"delivery_type": "Pickup",
+  "shipped_at": "Thu, 23 May 2013 00:00:00 GMT", "received_at": "Thu, 23 May 2013 00:00:00 GMT"}}
+</code></pre>
+
+<h6>Return:</h6>
+
+<pre><code>  Returns 204 status when the contact gets updated successfully.
+</code></pre>
+
+<h2>Locations</h2>
+
+<hr><h4>Retrieve list of locations</h4>
+
+<h6>Request:</h6>
+
+<table>
+<tr>
+<th>Method</th>
+<th>Request URL</th>
+</tr>
+<tr>
+<td><strong>GET</strong></td>
+<td><em><a href="https://api.tradegecko.com/locations/">https://api.tradegecko.com/locations/</a></em></td>
+</tr>
+</table><h5>Sample Response</h5>
+
+<pre><code>  {
+      "locations": [
+          {
+              "account_id": 4,
+              "address1": "888 Orchard Road",
+              "address2": "#08-88",
+              "city": "Singapore",
+              "country": "Singapore",
+              "id": 159,
+              "label": "Head Office",
+              "state": "SG",
+              "status": "active",
+              "suburb": "Singapore",
+              "zip_code": "888888"
+          },
+          {
+              "account_id": 4,
+              "address1": "999 Beach Road",
+              "address2": "",
+              "city": "Singapore",
+              "country": "Singapore",
+              "id": 160,
+              "label": "Warehouse",
+              "state": "SG",
+              "status": "active",
+              "suburb": "Singapore",
+              "zip_code": "999999"
+          }
+      ]
+  }
+</code></pre>
+
+<h4>Retrieve a specific location</h4>
+
+<h6>Request:</h6>
+
+<table>
+<tr>
+<th>Method</th>
+<th>Request URL</th>
+</tr>
+<tr>
+<td><strong>GET</strong></td>
+<td><em><a href="https://api.tradegecko.com/locations/%7BLOCATION_ID%7D">https://api.tradegecko.com/locations/{LOCATION_ID}</a></em></td>
+</tr>
+</table><h5>Sample Response</h5>
+
+<pre><code>  {
+      "location": {
+          "account_id": 4,
+          "address1": "999 Beach Road",
+          "address2": "",
+          "city": "Singapore",
+          "country": "Singapore",
+          "id": 160,
+          "label": "Warehouse",
+          "state": "SG",
+          "status": "active",
+          "suburb": "Singapore",
+          "zip_code": "999999"
+      }
+  }
+</code></pre>
+
+<h4>Create a new location</h4>
+
+<h6>Request:</h6>
+
+<table>
+<tr>
+<th>Method</th>
+<th>Request URL</th>
+</tr>
+<tr>
+<td><strong>POST</strong></td>
+<td><em><a href="https://api.tradegecko.com/locations/">https://api.tradegecko.com/locations/</a></em></td>
+</tr>
+</table><h6>Arguments:</h6>
+
+<pre><code>  label: required
+</code></pre>
+
+<h5>Sample Response</h5>
+
+<pre><code>  {
+      "location": {
+          "account_id": 4,
+          "address1": "999 Beach Road",
+          "address2": "",
+          "city": "Singapore",
+          "country": "Singapore",
+          "id": 160,
+          "label": "Warehouse",
+          "state": "SG",
+          "status": "active",
+          "suburb": "Singapore",
+          "zip_code": "999999"
+      }
+  }
+</code></pre>
+
+<h4>Update a location</h4>
+
+<h6>Request:</h6>
+
+<table>
+<tr>
+<th>Method</th>
+<th>Request URL</th>
+</tr>
+<tr>
+<td><strong>PUT</strong></td>
+<td><em><a href="https://api.tradegecko.com/locations/%7BLOCATION_ID%7D">https://api.tradegecko.com/locations/{LOCATION_ID}</a></em></td>
+</tr>
+</table><h6>Return:</h6>
+
+<pre><code>  Returns 204 status when the account gets updated successfully.
+</code></pre>
+
+<h4>Delete a location</h4>
+
+<h6>Request:</h6>
+
+<table>
+<tr>
+<th>Method</th>
+<th>Request URL</th>
+</tr>
+<tr>
+<td><strong>DELETE</strong></td>
+<td><em><a href="https://api.tradegecko.com/locations/%7BLOCATION_ID%7D">https://api.tradegecko.com/locations/{LOCATION_ID}</a></em></td>
+</tr>
+</table><h6>Return:</h6>
+
+<pre><code>  Returns 204 status when the account gets updated successfully.
+</code></pre>
+
+<h2>Notes</h2>
+
+<hr><h4>Retrieve list of notes</h4>
+
+<h6>Request:</h6>
+
+<table>
+<tr>
+<th>Method</th>
+<th>Request URL</th>
+</tr>
+<tr>
+<td><strong>GET</strong></td>
+<td><em><a href="https://api.tradegecko.com/notes/">https://api.tradegecko.com/notes/</a></em></td>
+</tr>
+</table><h5>Sample Response</h5>
+
+<pre><code>  {
+      "notes": [
+          {
+              "body": "Dropped stock off they loved it",
+              "company_id": 105,
+              "created_at": "2013-02-21T20:44:09Z",
+              "id": 42,
+              "updated_at": "2013-02-21T20:44:09Z",
+              "user_id": 26
+          },
+          {
+              "body": "This is a test note. Yay!  (if it works)",
+              "company_id": 105,
+              "created_at": "2012-12-11T13:55:12Z",
+              "id": 1,
+              "updated_at": "2012-12-11T13:55:12Z",
+              "user_id": 26
+          }
+      ]
+  }
+</code></pre>
+
+<h4>Retrieve a specific note</h4>
+
+<h6>Request:</h6>
+
+<table>
+<tr>
+<th>Method</th>
+<th>Request URL</th>
+</tr>
+<tr>
+<td><strong>PUT</strong></td>
+<td><em><a href="https://api.tradegecko.com/notes/%7BNOTE_ID%7D">https://api.tradegecko.com/notes/{NOTE_ID}</a></em></td>
+</tr>
+</table><h5>Sample Response</h5>
+
+<pre><code>  {
+      "note": {
+          "body": "This is a test note. Yay!  (if it works)",
+          "company_id": 105,
+          "created_at": "2012-12-11T13:55:12Z",
+          "id": 1,
+          "updated_at": "2012-12-11T13:55:12Z",
+          "user_id": 26
+      }
+  }
+</code></pre>
+
+<h4>Create a new note</h4>
+
+<h6>Request:</h6>
+
+<table>
+<tr>
+<th>Method</th>
+<th>Request URL</th>
+</tr>
+<tr>
+<td><strong>POST</strong></td>
+<td><em><a href="https://api.tradegecko.com/notes/">https://api.tradegecko.com/notes/</a></em></td>
+</tr>
+</table><h6>Arguments:</h6>
+
+<pre><code>  company_id: required
+              The id of the company where the address is to be
+              added.
+</code></pre>
+
+<h5>Sample Response</h5>
+
+<pre><code>  {
+      "note": {
+          "body": "This is a test note. Yay!  (if it works)",
+          "company_id": 105,
+          "created_at": "2012-12-11T13:55:12Z",
+          "id": 1,
+          "updated_at": "2012-12-11T13:55:12Z",
+          "user_id": 26
+      }
+  }
+</code></pre>
+
+<h4>Update a note</h4>
+
+<h6>Request:</h6>
+
+<table>
+<tr>
+<th>Method</th>
+<th>Request URL</th>
+</tr>
+<tr>
+<td><strong>PUT</strong></td>
+<td><em><a href="https://api.tradegecko.com/notes/%7BNOTE_ID%7D">https://api.tradegecko.com/notes/{NOTE_ID}</a></em></td>
+</tr>
+</table><h6>Return:</h6>
+
+<pre><code>  Returns 204 status when the account gets updated successfully.
+</code></pre>
+
+<h4>Delete a note</h4>
+
+<h6>Request:</h6>
+
+<table>
+<tr>
+<th>Method</th>
+<th>Request URL</th>
+</tr>
+<tr>
+<td><strong>DELETE</strong></td>
+<td><em><a href="https://api.tradegecko.com/notes/%7BNOTE_ID%7D">https://api.tradegecko.com/notes/{NOTE_ID}</a></em></td>
+</tr>
+</table><h6>Return:</h6>
+
+<pre><code>  Returns 204 status when the account gets updated successfully.
+</code></pre>
+
+<h2>Order Line Items</h2>
+
+<hr><h4>Retrieve list of order line items</h4>
+
+<h6>Request:</h6>
+
+<table>
+<tr>
+<th>Method</th>
+<th>Request URL</th>
+</tr>
+<tr>
+<td><strong>GET</strong></td>
+<td><em><a href="https://api.tradegecko.com/order_line_items/">https://api.tradegecko.com/order_line_items/</a></em></td>
+</tr>
+</table><h5>Sample Response</h5>
+
+<pre><code>  {
+      "order_line_items": [
+          {
+              "discount": null,
+              "freeform": null,
+              "fulfillment_id": 717,
+              "id": 320,
+              "image_url": null,
+              "label": null,
+              "order_id": 99,
+              "position": null,
+              "price": "10.0",
+              "quantity": "1.0",
+              "tax_rate": "15.0",
+              "variant_id": 1018
+          },
+          {
+              "discount": null,
+              "freeform": null,
+              "fulfillment_id": 717,
+              "id": 319,
+              "image_url": "https://images.com/thumbnail.jpeg",
+              "label": null,
+              "order_id": 99,
+              "position": null,
+              "price": "24.0",
+              "quantity": "3.0",
+              "tax_rate": "15.0",
+              "variant_id": 1026
+          }
+      ]
+  }
+</code></pre>
+
+<h4>Retrieve a specific order line item</h4>
+
+<h6>Request:</h6>
+
+<table>
+<tr>
+<th>Method</th>
+<th>Request URL</th>
+</tr>
+<tr>
+<td><strong>PUT</strong></td>
+<td><em><a href="https://api.tradegecko.com/order_line_items/%7BORDER_LINE_ITEM_ID%7D">https://api.tradegecko.com/order_line_items/{ORDER_LINE_ITEM_ID}</a></em></td>
+</tr>
+</table><h5>Sample Response</h5>
+
+<pre><code>  {
+      "order_line_item": {
+          "discount": null,
+          "freeform": null,
+          "fulfillment_id": 717,
+          "id": 319,
+          "image_url": "https://images.com/thumbnail.jpeg",
+          "label": null,
+          "order_id": 99,
+          "position": null,
+          "price": "24.0",
+          "quantity": "3.0",
+          "tax_rate": "15.0",
+          "variant_id": 1026
+      }
+  }
+</code></pre>
+
+<h4>Create a new order line item</h4>
+
+<h6>Request:</h6>
+
+<table>
+<tr>
+<th>Method</th>
+<th>Request URL</th>
+</tr>
+<tr>
+<td><strong>POST</strong></td>
+<td><em><a href="https://api.tradegecko.com/order_line_items/">https://api.tradegecko.com/order_line_items/</a></em></td>
+</tr>
+</table><h5>Sample Response</h5>
+
+<pre><code>  {
+      "order_line_item": {
+          "discount": null,
+          "freeform": null,
+          "fulfillment_id": 717,
+          "id": 319,
+          "image_url": "https://images.com/thumbnail.jpeg",
+          "label": null,
+          "order_id": 99,
+          "position": null,
+          "price": "24.0",
+          "quantity": "3.0",
+          "tax_rate": "15.0",
+          "variant_id": 1026
+      }
+  }
+</code></pre>
+
+<h4>Update an order line item</h4>
+
+<h6>Request:</h6>
+
+<table>
+<tr>
+<th>Method</th>
+<th>Request URL</th>
+</tr>
+<tr>
+<td><strong>PUT</strong></td>
+<td><em><a href="https://api.tradegecko.com/order_line_items/%7BORDER_LINE_ITEM_ID%7D">https://api.tradegecko.com/order_line_items/{ORDER_LINE_ITEM_ID}</a></em></td>
+</tr>
+</table><h6>Return:</h6>
+
+<pre><code>  Returns 204 status when the account gets updated successfully.
+</code></pre>
+
+<h4>Delete an order line item</h4>
+
+<h6>Request:</h6>
+
+<table>
+<tr>
+<th>Method</th>
+<th>Request URL</th>
+</tr>
+<tr>
+<td><strong>DELETE</strong></td>
+<td><em><a href="https://api.tradegecko.com/order_line_items/%7BORDER_LINE_ITEM_ID%7D">https://api.tradegecko.com/order_line_items/{ORDER_LINE_ITEM_ID}</a></em></td>
+</tr>
+</table><h6>Return:</h6>
+
+<pre><code>  Returns 204 status when the account gets updated successfully.
+</code></pre>
+
+<h2>Orders</h2>
+
+<hr><h4>Retrieve list of orders</h4>
+
+<h6>Request:</h6>
+
+<table>
+<tr>
+<th>Method</th>
+<th>Request URL</th>
+</tr>
+<tr>
+<td><strong>GET</strong></td>
+<td><em><a href="https://api.tradegecko.com/orders/">https://api.tradegecko.com/orders/</a></em></td>
+</tr>
+</table><h5>Sample Response</h5>
+
+<pre><code>  {
+      "orders": [
+         {
+            "assignee_id": null,
+            "billing_address_id": 102,
+            "cached_total": "74.75",
+            "company_id": 104,
+            "created_at": "2013-03-24T05:07:21Z",
+            "default_price_type": null,
+            "due_at": "2013-04-07",
+            "email": "user@my.application.com",
+            "fulfillment_ids": [ 4 ],
+            "fulfillment_status": "shipped",
+            "id": 5,
+            "invoice_number": "INV0032",
+            "issued_at": "2013-03-24",
+            "notes": null,
+            "order_line_item_ids": [ 11515 ],
+            "order_number": "SO02000",
+            "payment_status": "unpaid",
+            "phone_number": "6543 5432",
+            "reference_number": null,
+            "shipping_address_id": 102,
+            "shopify": null,
+            "status": "fulfilled",
+            "stock_location_id": 159,
+            "tax_label": "GST",
+            "tax_override": null,
+            "tax_type": "exclusive",
+            "tracking_number": null,
+            "updated_at": "2013-03-24T05:07:46Z",
+            "user_id": 13,
+            "xero": null
+         }
+      ]
+  }
+</code></pre>
+
+<h4>Retrieve a specific order</h4>
+
+<h6>Request:</h6>
+
+<table>
+<tr>
+<th>Method</th>
+<th>Request URL</th>
+</tr>
+<tr>
+<td><strong>PUT</strong></td>
+<td><em><a href="https://api.tradegecko.com/orders/%7BORDER_ID%7D">https://api.tradegecko.com/orders/{ORDER_ID}</a></em></td>
+</tr>
+</table><h5>Sample Response</h5>
+
+<pre><code>  {
+      "order": {
+          "assignee_id": null,
+          "billing_address_id": 102,
+          "cached_total": "74.75",
+          "company_id": 104,
+          "created_at": "2013-03-24T05:07:21Z",
+          "default_price_type": null,
+          "due_at": "2013-04-07",
+          "email": "user@my.application.com",
+          "fulfillment_ids": [ 4 ],
+          "fulfillment_status": "shipped",
+          "id": 5,
+          "invoice_number": "INV0032",
+          "issued_at": "2013-03-24",
+          "notes": null,
+          "order_line_item_ids": [ 11515 ],
+          "order_number": "SO02000",
+          "payment_status": "unpaid",
+          "phone_number": "6543 5432",
+          "reference_number": null,
+          "shipping_address_id": 102,
+          "shopify": null,
+          "status": "fulfilled",
+          "stock_location_id": 159,
+          "tax_label": "GST",
+          "tax_override": null,
+          "tax_type": "exclusive",
+          "tracking_number": null,
+          "updated_at": "2013-03-24T05:07:46Z",
+          "user_id": 13,
+          "xero": null
+      }
+  }
+</code></pre>
+
+<h4>Create a new order</h4>
+
+<h6>Request:</h6>
+
+<table>
+<tr>
+<th>Method</th>
+<th>Request URL</th>
+</tr>
+<tr>
+<td><strong>POST</strong></td>
+<td><em><a href="https://api.tradegecko.com/orders/%7BORDER_ID%7D">https://api.tradegecko.com/orders/{ORDER_ID}</a></em></td>
+</tr>
+</table><h5>Sample Response</h5>
+
+<pre><code>  {
+      "order": {
+          "assignee_id": null,
+          "billing_address_id": 102,
+          "cached_total": "74.75",
+          "company_id": 104,
+          "created_at": "2013-03-24T05:07:21Z",
+          "default_price_type": null,
+          "due_at": "2013-04-07",
+          "email": "user@my.application.com",
+          "fulfillment_ids": [ 4 ],
+          "fulfillment_status": "shipped",
+          "id": 5,
+          "invoice_number": "INV0032",
+          "issued_at": "2013-03-24",
+          "notes": null,
+          "order_line_item_ids": [ 11515 ],
+          "order_number": "SO02000",
+          "payment_status": "unpaid",
+          "phone_number": "6543 5432",
+          "reference_number": null,
+          "shipping_address_id": 102,
+          "shopify": null,
+          "status": "fulfilled",
+          "stock_location_id": 159,
+          "tax_label": "GST",
+          "tax_override": null,
+          "tax_type": "exclusive",
+          "tracking_number": null,
+          "updated_at": "2013-03-24T05:07:46Z",
+          "user_id": 13,
+          "xero": null
+      }
+  }
+</code></pre>
+
+<h4>Update an order</h4>
+
+<h6>Request:</h6>
+
+<table>
+<tr>
+<th>Method</th>
+<th>Request URL</th>
+</tr>
+<tr>
+<td><strong>PUT</strong></td>
+<td><em><a href="https://api.tradegecko.com/orders/%7BORDER_ID%7D">https://api.tradegecko.com/orders/{ORDER_ID}</a></em></td>
+</tr>
+</table><h6>Return:</h6>
+
+<pre><code>  Returns 204 status when the account gets updated successfully.
+</code></pre>
+
+<h2>Photos</h2>
+
+<hr><h4>Retrieve list of variant images</h4>
+
+<h6>Request:</h6>
+
+<table>
+<tr>
+<th>Method</th>
+<th>Request URL</th>
+</tr>
+<tr>
+<td><strong>GET</strong></td>
+<td><em><a href="https://api.tradegecko.com/images/">https://api.tradegecko.com/images/</a></em></td>
+</tr>
+</table><h5>Sample Response</h5>
+
+<pre><code>  {
+      "images": [
+          {
+              "base_path": "https://images.com/variant_image/image/1",
+              "file_name": "0icff-04.jpg",
+              "id": 1,
+              "name": "p16t7iul8c1qjg11561v3d14mm1grm5.jpg",
+              "position": null,
+              "uploader_id": null,
+              "variant_id": 2,
+              "versions": [
+                  "thumbnail"
+              ]
+          },
+          {
+              "base_path": "https://images.com/variant_image/image/1",
+              "file_name": "alexchloe01.jpg",
+              "id": 2,
+              "name": "p16t7jbnv81kfr1egp1pd51o9f19ig5.jpg",
+              "position": null,
+              "uploader_id": null,
+              "variant_id": 2,
+              "versions": [
+                  "thumbnail"
+              ]
+          }
+      ]
+  }
+</code></pre>
+
+<h4>Add a new variant image</h4>
+
+<h6>Request:</h6>
+
+<table>
+<tr>
+<th>Method</th>
+<th>Request URL</th>
+</tr>
+<tr>
+<td><strong>POST</strong></td>
+<td><em><a href="https://api.tradegecko.com/images/">https://api.tradegecko.com/images/</a></em></td>
+</tr>
+</table><h5>Sample Response</h5>
+
+<pre><code>  {
+      "image": {
+              "base_path": "https://images.com/variant_image/image/1",
+              "file_name": "0icff-04.jpg",
+              "id": 1,
+              "name": "p16t7iul8c1qjg11561v3d14mm1grm5.jpg",
+              "position": null,
+              "uploader_id": null,
+              "variant_id": 2,
+              "versions": [ "thumbnail" ]
+      }
+  }
+</code></pre>
+
+<h4>Delete a variant image</h4>
+
+<h6>Request:</h6>
+
+<table>
+<tr>
+<th>Method</th>
+<th>Request URL</th>
+</tr>
+<tr>
+<td><strong>DELETE</strong></td>
+<td><em><a href="https://api.tradegecko.com/images/%7BIMAGE_ID%7D">https://api.tradegecko.com/images/{IMAGE_ID}</a></em></td>
+</tr>
+</table><h6>Return:</h6>
+
+<pre><code>  Returns 204 status when the account gets updated successfully.
+</code></pre>
+
+<h2>Procurements</h2>
+
+<hr><h4>Retrieve list of procurements</h4>
+
+<h6>Request:</h6>
+
+<table>
+<tr>
+<th>Method</th>
+<th>Request URL</th>
+</tr>
+<tr>
+<td><strong>GET</strong></td>
+<td><em><a href="https://api.tradegecko.com/procurements/">https://api.tradegecko.com/procurements/</a></em></td>
+</tr>
+</table><h5>Sample Response</h5>
+
+<pre><code>  {
+      "procurements": [
+          {
+              "created_at": "2013-02-21T23:17:19Z",
+              "id": 51,
+              "purchase_order_id": 127,
+              "purchase_order_line_item_ids": [
+                  172
+              ],
+              "received_at": "2013-02-21T23:16:56Z",
+              "updated_at": "2013-02-21T23:17:19Z"
+          },
+          {
+              "created_at": "2013-01-25T10:43:16Z",
+              "id": 18,
+              "purchase_order_id": 127,
+              "purchase_order_line_item_ids": [
+                  175
+              ],
+              "received_at": "2013-01-25T10:43:13Z",
+              "updated_at": "2013-01-25T10:43:16Z"
+          }
+      ],
+      "purchase_order_line_items": [
+          {
+              "extra_cost_value": null,
+              "freeform": null,
+              "id": 172,
+              "image_url": "https://images.com/thumbnail__void_0_-16.png",
+              "label": null,
+              "position": 0,
+              "price": null,
+              "procurement_id": 51,
+              "purchase_order_id": 127,
+              "quantity": "11.0",
+              "tax_rate": "15.0",
+              "variant_id": 13410
+          },
+          {
+              "extra_cost_value": null,
+              "freeform": null,
+              "id": 175,
+              "image_url": "https://images.com/thumbnail__void_0_-16.png",
+              "label": null,
+              "position": 1,
+              "price": null,
+              "procurement_id": 18,
+              "purchase_order_id": 127,
+              "quantity": "20.0",
+              "tax_rate": "15.0",
+              "variant_id": 1996
+          }
+      ]
+  }
+</code></pre>
+
+<h4>Retrieve a specific procurement</h4>
+
+<h6>Request:</h6>
+
+<table>
+<tr>
+<th>Method</th>
+<th>Request URL</th>
+</tr>
+<tr>
+<td><strong>GET</strong></td>
+<td><em><a href="https://api.tradegecko.com/procurements/%7BPROCUREMENT_ID%7D">https://api.tradegecko.com/procurements/{PROCUREMENT_ID}</a></em></td>
+</tr>
+</table><h5>Sample Response</h5>
+
+<pre><code>  {
+      "procurement": {
+          "created_at": "2013-02-21T23:17:19Z",
+          "id": 51,
+          "purchase_order_id": 127,
+          "purchase_order_line_item_ids": [
+              172
+          ],
+          "received_at": "2013-02-21T23:16:56Z",
+          "updated_at": "2013-02-21T23:17:19Z"
+      },
+      "purchase_order_line_items": [
+          {
+              "extra_cost_value": null,
+              "freeform": null,
+              "id": 172,
+              "image_url": "https://images.com/thumbnail__void_0_-16.png",
+              "label": null,
+              "position": 0,
+              "price": null,
+              "procurement_id": 51,
+              "purchase_order_id": 127,
+              "quantity": "11.0",
+              "tax_rate": "15.0",
+              "variant_id": 13410
+          }
+      ]
+  }
+</code></pre>
+
+<h4>Create a new procurement</h4>
+
+<h6>Request:</h6>
+
+<table>
+<tr>
+<th>Method</th>
+<th>Request URL</th>
+</tr>
+<tr>
+<td><strong>POST</strong></td>
+<td><em><a href="https://api.tradegecko.com/procurements/">https://api.tradegecko.com/procurements/</a></em></td>
+</tr>
+</table><h4>Update a procurement</h4>
+
+<h6>Request:</h6>
+
+<table>
+<tr>
+<th>Method</th>
+<th>Request URL</th>
+</tr>
+<tr>
+<td><strong>PUT</strong></td>
+<td><em><a href="https://api.tradegecko.com/procurements/%7BPROCUREMENT_ID%7D">https://api.tradegecko.com/procurements/{PROCUREMENT_ID}</a></em></td>
+</tr>
+</table><h6>Return:</h6>
+
+<pre><code>  Returns 204 status when the account gets updated successfully.
+</code></pre>
+
+<h2>Products</h2>
+
+<hr><h4>Retrieve list of products</h4>
+
+<h6>Request:</h6>
+
+<table>
+<tr>
+<th>Method</th>
+<th>Request URL</th>
+</tr>
+<tr>
+<td><strong>GET</strong></td>
+<td><em><a href="https://api.tradegecko.com/products/">https://api.tradegecko.com/products/</a></em></td>
+</tr>
+</table><h5>Sample Response</h5>
+
+<pre><code>  {
+      "products": [
+          {
+              "created_at": "2013-04-18T04:40:00Z",
+              "description": "An awesome product",
+              "id": 2,
+              "image_url": null,
+              "name": "BUTTERFLY TEE",
+              "opt1": "Color",
+              "opt2": "Size",
+              "opt3": null,
+              "product_type": "T-Shirt",
+              "search_cache": "DCP022-S Small DCP022-M Medium DCP022-L Large DCP022-XL X-Large",
+              "status": "active",
+              "tag_string": "T-Shirts,Winter 2012",
+              "updated_at": "2013-04-18T04:40:00Z",
+              "variant_ids": [ 1, 2, 3, 4 ],
+              "vendor": "Dead Castle Project"
+          },
+          {
+              "created_at": "2013-04-18T04:39:59Z",
+              "description": "A description of the product",
+              "id": 21823,
+              "image_url": "https://images.com/thumbnail_img.jpg",
+              "name": "ALMOST FAMOUS TEE",
+              "opt1": "Color",
+              "opt2": "Size",
+              "opt3": null,
+              "product_type": "T-Shirt",
+              "search_cache": "DCP021-S Small DCP021-M Medium DCP021-L Large DCP021-XL X-Large",
+              "status": "active",
+              "tag_string": "T-Shirts,Winter 2012",
+              "updated_at": "2013-04-18T04:39:59Z",
+              "variant_ids": [ 5, 6, 7, 8 ],
+              "vendor": "Dead Castle Project"
+          }
+      ]
+  }
+</code></pre>
+
+<h4>Retrieve a specific product</h4>
+
+<h6>Request:</h6>
+
+<table>
+<tr>
+<th>Method</th>
+<th>Request URL</th>
+</tr>
+<tr>
+<td><strong>PUT</strong></td>
+<td><em><a href="https://api.tradegecko.com/products/%7BPRODUCT_ID%7D">https://api.tradegecko.com/products/{PRODUCT_ID}</a></em></td>
+</tr>
+</table><h5>Sample Response</h5>
+
+<pre><code>  {
+      "product": {
+          "created_at": "2013-04-18T04:40:00Z",
+          "description": "An awesome product",
+          "id": 2,
+          "image_url": null,
+          "name": "BUTTERFLY TEE",
+          "opt1": "Color",
+          "opt2": "Size",
+          "opt3": null,
+          "product_type": "T-Shirt",
+          "search_cache": "DCP022-S Small DCP022-M Medium DCP022-L Large DCP022-XL X-Large",
+          "status": "active",
+          "tag_string": "T-Shirts,Winter 2012",
+          "updated_at": "2013-04-18T04:40:00Z",
+          "variant_ids": [ 1, 2, 3, 4 ],
+          "vendor": "Dead Castle Project"
+      }
+  }
+</code></pre>
+
+<h4>Create a new product</h4>
+
+<h6>Request:</h6>
+
+<table>
+<tr>
+<th>Method</th>
+<th>Request URL</th>
+</tr>
+<tr>
+<td><strong>POST</strong></td>
+<td><em><a href="https://api.tradegecko.com/products/">https://api.tradegecko.com/products/</a></em></td>
+</tr>
+</table><h5>Sample Response</h5>
+
+<pre><code>  {
+      "product": {
+          "created_at": "2013-04-18T04:40:00Z",
+          "description": "An awesome product",
+          "id": 2,
+          "image_url": null,
+          "name": "BUTTERFLY TEE",
+          "opt1": "Color",
+          "opt2": "Size",
+          "opt3": null,
+          "product_type": "T-Shirt",
+          "search_cache": "DCP022-S Small DCP022-M Medium DCP022-L Large DCP022-XL X-Large",
+          "status": "active",
+          "tag_string": "T-Shirts,Winter 2012",
+          "updated_at": "2013-04-18T04:40:00Z",
+          "variant_ids": [ 1, 2, 3, 4 ],
+          "vendor": "Dead Castle Project"
+      }
+  }
+</code></pre>
+
+<h4>Update a product</h4>
+
+<h6>Request:</h6>
+
+<table>
+<tr>
+<th>Method</th>
+<th>Request URL</th>
+</tr>
+<tr>
+<td><strong>PUT</strong></td>
+<td><em><a href="https://api.tradegecko.com/products/%7BPRODUCT_ID%7D">https://api.tradegecko.com/products/{PRODUCT_ID}</a></em></td>
+</tr>
+</table><h6>Return:</h6>
+
+<pre><code>  Returns 204 status when the account gets updated successfully.
+</code></pre>
+
+<h4>Delete a product</h4>
+
+<h6>Request:</h6>
+
+<table>
+<tr>
+<th>Method</th>
+<th>Request URL</th>
+</tr>
+<tr>
+<td><strong>DELETE</strong></td>
+<td><em><a href="https://api.tradegecko.com/products/%7BPRODUCT_ID%7D">https://api.tradegecko.com/products/{PRODUCT_ID}</a></em></td>
+</tr>
+</table><h6>Return:</h6>
+
+<pre><code>  Returns 204 status when the account gets updated successfully.
+</code></pre>
+
+<h2>Purchase Orders</h2>
+
+<hr><h4>Retrieve list of purchase orders</h4>
+
+<h6>Request:</h6>
+
+<table>
+<tr>
+<th>Method</th>
+<th>Request URL</th>
+</tr>
+<tr>
+<td><strong>GET</strong></td>
+<td><em><a href="https://api.tradegecko.com/purchase_orders/">https://api.tradegecko.com/purchase_orders/</a></em></td>
+</tr>
+</table><h5>Sample Response</h5>
+
+<pre><code>  {
+      "purchase_orders": [
+          {
+              "billing_address_id": 153,
+              "company_id": 128,
+              "created_at": "2013-05-08T05:45:57Z",
+              "due_at": "2013-05-22",
+              "email": "carlos@carlsbikes.com",
+              "id": 466,
+              "notes": null,
+              "order_number": "PO0084",
+              "procurement_ids": [],
+              "procurement_status": "unprocured",
+              "purchase_order_line_item_ids": [
+                  1928
+              ],
+              "reference_number": null,
+              "status": "active",
+              "stock_location_id": 159,
+              "tax_type": "inclusive",
+              "updated_at": "2013-05-08T05:46:34Z",
+              "vendor_address_id": 188,
+              "xero": "f74d194f-3a96-47de-b783-77114d26d7e9"
+          },
+          {
+              "billing_address_id": 18,
+              "company_id": 128,
+              "created_at": "2012-11-01T02:09:32Z",
+              "due_at": null,
+              "email": "",
+              "id": 5,
+              "notes": "Thanks Carl for your awesome bike parts",
+              "order_number": "PO0005",
+              "procurement_ids": [],
+              "procurement_status": "unprocured",
+              "purchase_order_line_item_ids": [
+                  4,
+                  2,
+                  3
+              ],
+              "reference_number": "TR00345",
+              "status": "received",
+              "stock_location_id": 18,
+              "tax_type": null,
+              "updated_at": "2013-05-08T03:10:15Z",
+              "vendor_address_id": 188,
+              "xero": null
+          },
+      ]
+  }
+</code></pre>
+
+<h4>Retrieve a specific purchase order</h4>
+
+<h6>Request:</h6>
+
+<table>
+<tr>
+<th>Method</th>
+<th>Request URL</th>
+</tr>
+<tr>
+<td><strong>PUT</strong></td>
+<td><em><a href="https://api.tradegecko.com/purchase_orders/%7BPURCHASE_ORDER_ID%7D">https://api.tradegecko.com/purchase_orders/{PURCHASE_ORDER_ID}</a></em></td>
+</tr>
+</table><h5>Sample response</h5>
+
+<pre><code>  {
+      "purchase_order": {
+          "billing_address_id": 153,
+          "company_id": 103,
+          "created_at": "2013-04-30T07:07:13Z",
+          "due_at": "2013-05-14",
+          "email": "office@mikesbikes.com",
+          "id": 412,
+          "notes": null,
+          "order_number": "PO0082",
+          "procurement_ids": [ 249 ],
+          "procurement_status": "partial",
+          "purchase_order_line_item_ids": [ 1674, 1672, 1671, 1673 ],
+          "reference_number": null,
+          "status": "active",
+          "stock_location_id": 160,
+          "tax_type": "inclusive",
+          "updated_at": "2013-05-08T03:10:25Z",
+          "vendor_address_id": 101,
+          "xero": "b5a6d858-3e99-4df5-91e4-e8a01b35828a"
+      }
+  }
+</code></pre>
+
+<h4>Create a new purchase order</h4>
+
+<h6>Request:</h6>
+
+<table>
+<tr>
+<th>Method</th>
+<th>Request URL</th>
+</tr>
+<tr>
+<td><strong>POST</strong></td>
+<td><em><a href="https://api.tradegecko.com/purchase_orders/">https://api.tradegecko.com/purchase_orders/</a></em></td>
+</tr>
+</table><h5>Sample Response</h5>
+
+<pre><code>  {
+      "purchase_order": {
+          "billing_address_id": 153,
+          "company_id": 103,
+          "created_at": "2013-04-30T07:07:13Z",
+          "due_at": "2013-05-14",
+          "email": "office@mikesbikes.com",
+          "id": 412,
+          "notes": null,
+          "order_number": "PO0082",
+          "procurement_ids": [ 249 ],
+          "procurement_status": "partial",
+          "purchase_order_line_item_ids": [ 1674, 1672, 1671, 1673 ],
+          "reference_number": null,
+          "status": "active",
+          "stock_location_id": 160,
+          "tax_type": "inclusive",
+          "updated_at": "2013-05-08T03:10:25Z",
+          "vendor_address_id": 101,
+          "xero": "b5a6d858-3e99-4df5-91e4-e8a01b35828a"
+      }
+  }
+</code></pre>
+
+<h4>Update a purchase order</h4>
+
+<h6>Request:</h6>
+
+<table>
+<tr>
+<th>Method</th>
+<th>Request URL</th>
+</tr>
+<tr>
+<td><strong>PUT</strong></td>
+<td><em><a href="https://api.tradegecko.com/purchase_orders/%7BPURCHASE_ORDER_ID%7D">https://api.tradegecko.com/purchase_orders/{PURCHASE_ORDER_ID}</a></em></td>
+</tr>
+</table><h6>Return:</h6>
+
+<pre><code>  Returns 204 status when the account gets updated successfully.
+</code></pre>
+
+<h4>Delete a purchase order</h4>
+
+<h6>Request:</h6>
+
+<table>
+<tr>
+<th>Method</th>
+<th>Request URL</th>
+</tr>
+<tr>
+<td><strong>DELETE</strong></td>
+<td><em><a href="https://api.tradegecko.com/purchase_orders/%7BPURCHASE_ORDER_ID%7D">https://api.tradegecko.com/purchase_orders/{PURCHASE_ORDER_ID}</a></em></td>
+</tr>
+</table><h6>Return:</h6>
+
+<pre><code>  Returns 204 status when the account gets updated successfully.
+</code></pre>
+
+<h2>Stock Adjustments</h2>
+
+<hr><h4>Retrieve list of stock adjustments</h4>
+
+<h6>Request:</h6>
+
+<table>
+<tr>
+<th>Method</th>
+<th>Request URL</th>
+</tr>
+<tr>
+<td><strong>GET</strong></td>
+<td><em><a href="https://api.tradegecko.com/stock_adjustments/">https://api.tradegecko.com/stock_adjustments/</a></em></td>
+</tr>
+</table><h5>Sample Response</h5>
+
+<pre><code>  {
+      "stock_adjustment_line_items": [
+          {
+              "id": 76,
+              "position": 0,
+              "quantity": "-1.0",
+              "stock_adjustment_id": 40,
+              "variant_id": 54725
+          }
+      ],
+      "stock_adjustments": [
+          {
+              "adjustment_number": "SA0001",
+              "id": 40,
+              "notes": null,
+              "reason": "damaged",
+              "stock_adjustment_line_item_ids": [
+                  76
+              ],
+              "stock_location_id": 159,
+              "updated_at": "2013-05-22T00:22:26Z"
+          }
+      ]
+  }
+</code></pre>
+
+<h4>Create a new stock adjustment</h4>
+
+<h6>Request:</h6>
+
+<table>
+<tr>
+<th>Method</th>
+<th>Request URL</th>
+</tr>
+<tr>
+<td><strong>POST</strong></td>
+<td><em><a href="https://api.tradegecko.com/stock_adjustments/">https://api.tradegecko.com/stock_adjustments/</a></em></td>
+</tr>
+</table><h5>Sample Response</h5>
+
+<pre><code>  {
+      "stock_adjustment_line_items": [
+          {
+              "id": 76,
+              "position": 0,
+              "quantity": "-1.0",
+              "stock_adjustment_id": 40,
+              "variant_id": 54725
+          }
+      ],
+      "stock_adjustments": {
+          "adjustment_number": "SA0001",
+          "id": 40,
+          "notes": null,
+          "reason": "damaged",
+          "stock_adjustment_line_item_ids": [
+              76
+          ],
+          "stock_location_id": 159,
+          "updated_at": "2013-05-22T00:22:26Z"
+      }
+  }
+</code></pre>
+
+<h2>Users</h2>
+
+<hr><h4>Retrieve list of users</h4>
+
+<h6>Request:</h6>
+
+<table>
+<tr>
+<th>Method</th>
+<th>Request URL</th>
+</tr>
+<tr>
+<td><strong>GET</strong></td>
+<td><em><a href="https://api.tradegecko.com/users/">https://api.tradegecko.com/users/</a></em></td>
+</tr>
+</table><h5>Sample Response</h5>
+
+<pre><code>  {
+      "users": [
+          {
+              "account_id": 4,
+              "avatar_url": "/assets/avatars/avatar3.png",
+              "email": "user@tradegecko.com",
+              "first_name": "Steve",
+              "id": 1339,
+              "last_name": "Lawrence",
+              "last_sign_in_at": "2013-05-21T06:49:24Z",
+              "location": null,
+              "mobile_phone": null,
+              "phone_number": null,
+              "position": null,
+              "roles": [ "user" ],
+              "status": "active"
+          },
+          {
+              "account_id": 4,
+              "avatar_url": "https://images.com/image.jpg",
+              "email": "admin@tradegecko.com",
+              "first_name": "John",
+              "id": 27,
+              "last_name": "Smith",
+              "last_sign_in_at": "2013-05-21T09:06:53Z",
+              "location": null,
+              "mobile_phone": null,
+              "phone_number": null,
+              "position": null,
+              "roles": [ "user", "admin" ],
+              "status": "active"
+          }
+      ]
+  }
+</code></pre>
+
+<h4>Retrieve a specific user</h4>
+
+<h6>Request:</h6>
+
+<table>
+<tr>
+<th>Method</th>
+<th>Request URL</th>
+</tr>
+<tr>
+<td><strong>GET</strong></td>
+<td><em><a href="https://api.tradegecko.com/users/%7BUSER_ID%7D">https://api.tradegecko.com/users/{USER_ID}</a></em></td>
+</tr>
+</table><h5>Sample Response</h5>
+
+<pre><code>  {
+      "user": {
+          "account_id": 4,
+          "avatar_url": "/assets/avatars/avatar3.png",
+          "email": "user@tradegecko.com",
+          "first_name": "Steve",
+          "id": 1339,
+          "last_name": "Lawrence",
+          "last_sign_in_at": "2013-05-21T06:49:24Z",
+          "location": null,
+          "mobile_phone": null,
+          "phone_number": null,
+          "position": null,
+          "roles": [ "user" ],
+          "status": "active"
+      }
+  }
+</code></pre>
+
+<h4>Retrieve current_user</h4>
+
+<h6>Request:</h6>
+
+<table>
+<tr>
+<th>Method</th>
+<th>Request URL</th>
+</tr>
+<tr>
+<td><strong>GET</strong></td>
+<td><em><a href="https://api.tradegecko.com/users/current">https://api.tradegecko.com/users/current</a></em></td>
+</tr>
+</table><h5>Sample Response</h5>
+
+<pre><code>  {
+      "user": {
+          "account_id": 4,
+          "avatar_url": "/assets/avatars/avatar3.png",
+          "email": "user@tradegecko.com",
+          "first_name": "Steve",
+          "id": 1339,
+          "last_name": "Lawrence",
+          "last_sign_in_at": "2013-05-21T06:49:24Z",
+          "location": null,
+          "mobile_phone": null,
+          "phone_number": null,
+          "position": null,
+          "roles": [ "user" ],
+          "status": "active"
+      }
+  }
+</code></pre>
+
+<h4>Update a user</h4>
+
+<h6>Request:</h6>
+
+<table>
+<tr>
+<th>Method</th>
+<th>Request URL</th>
+</tr>
+<tr>
+<td><strong>PUT</strong></td>
+<td><em><a href="https://api.tradegecko.com/users/%7BUSER_ID%7D">https://api.tradegecko.com/users/{USER_ID}</a></em></td>
+</tr>
+</table><h6>Return:</h6>
+
+<pre><code>  Returns 204 status when the account gets updated successfully.
+</code></pre>
+
+<h4>Delete a user</h4>
+
+<h6>Request:</h6>
+
+<table>
+<tr>
+<th>Method</th>
+<th>Request URL</th>
+</tr>
+<tr>
+<td><strong>DELETE</strong></td>
+<td><em><a href="https://api.tradegecko.com/users/%7BUSER_ID%7D">https://api.tradegecko.com/users/{USER_ID}</a></em></td>
+</tr>
+</table><h6>Return:</h6>
+
+<pre><code>  Returns 204 status when the account gets updated successfully.
+</code></pre>
+
+<h4>Add an avatar</h4>
+
+<h6>Request:</h6>
+
+<table>
+<tr>
+<th>Method</th>
+<th>Request URL</th>
+</tr>
+<tr>
+<td><strong>POST</strong></td>
+<td><em><a href="https://api.tradegecko.com/users/%7BUSER_ID%7D/avatar">https://api.tradegecko.com/users/{USER_ID}/avatar</a></em></td>
+</tr>
+</table><h2>Variants</h2>
+
+<hr><h4>Retrieve list of variants</h4>
+
+<h6>Request:</h6>
+
+<table>
+<tr>
+<th>Method</th>
+<th>Request URL</th>
+</tr>
+<tr>
+<td><strong>GET</strong></td>
+<td><em><a href="https://api.tradegecko.com/variants/">https://api.tradegecko.com/variants/</a></em></td>
+</tr>
+</table><h5>Smple Response</h5>
+
+<pre><code>  {
+      "images": [
+          {
+              "base_path": "https://images.com/image/52290",
+              "file_name": "ywgNWV3fD1_img.jpg",
+              "id": 52290,
+              "name": "img.jpg",
+              "position": 1,
+              "uploader_id": 13,
+              "variant_id": 54721,
+              "versions": [ "thumbnail" ]
+          },
+          {
+              "base_path": "https://images.com/image/52291",
+              "file_name": "U0nUt8CeW_img.jpg",
+              "id": 52291,
+              "name": "img.jpg",
+              "position": 2,
+              "uploader_id": 13,
+              "variant_id": 54721,
+              "versions": [ "thumbnail" ]
+          },
+      ],
+      "variants": [
+          {
+              "cost_price": "16.0",
+              "description": null,
+              "id": 54725,
+              "image_ids": [],
+              "is_online": false,
+              "keep_selling": false,
+              "last_cost_price": null,
+              "manage_stock": true,
+              "max_online": null,
+              "moving_average_cost": "0",
+              "name": "Small",
+              "online_id": null,
+              "opt1": "White",
+              "opt2": "Small",
+              "opt3": null,
+              "position": 1,
+              "product_id": 21824,
+              "reorder_point": null,
+              "retail_price": "90.0",
+              "sku": "DCP022-S",
+              "status": "active",
+              "stock_levels": {
+                  "159": "-91.0"
+              },
+              "stock_on_hand": "-91.0",
+              "taxable": true,
+              "upc": null,
+              "vendor_code": null,
+              "wholesale_price": "22.5"
+          }
+      ]
+  }
+</code></pre>
+
+<h4>Retrieve a specific variant</h4>
+
+<h6>Request:</h6>
+
+<table>
+<tr>
+<th>Method</th>
+<th>Request URL</th>
+</tr>
+<tr>
+<td><strong>PUT</strong></td>
+<td><em><a href="https://api.tradegecko.com/variants/%7BVARIANT_ID%7D">https://api.tradegecko.com/variants/{VARIANT_ID}</a></em></td>
+</tr>
+</table><h5>Sample Response</h5>
+
+<pre><code>  {
+      "images": [],
+      "variant": {
+          "cost_price": "15.0",
+          "description": null,
+          "id": 54725,
+          "image_ids": [],
+          "is_online": false,
+          "keep_selling": false,
+          "last_cost_price": null,
+          "manage_stock": true,
+          "max_online": null,
+          "moving_average_cost": "0",
+          "name": "Small",
+          "online_id": null,
+          "opt1": "White",
+          "opt2": "Small",
+          "opt3": null,
+          "position": 1,
+          "product_id": 21824,
+          "reorder_point": null,
+          "retail_price": "90.0",
+          "sku": "DCP022-S",
+          "status": "active",
+          "stock_levels": {
+              "159": "-91.0"
+          },
+          "stock_on_hand": "-91.0",
+          "taxable": true,
+          "upc": null,
+          "vendor_code": null,
+          "wholesale_price": "22.5"
+      }
+  }
+</code></pre>
+
+<h4>Create a new variant</h4>
+
+<h6>Request:</h6>
+
+<table>
+<tr>
+<th>Method</th>
+<th>Request URL</th>
+</tr>
+<tr>
+<td><strong>POST</strong></td>
+<td><em><a href="https://api.tradegecko.com/variants/">https://api.tradegecko.com/variants/</a></em></td>
+</tr>
+</table><h5>Sample Response</h5>
+
+<pre><code>  {
+      "images": [],
+      "variant": {
+          "cost_price": "15.0",
+          "description": null,
+          "id": 54725,
+          "image_ids": [],
+          "is_online": false,
+          "keep_selling": false,
+          "last_cost_price": null,
+          "manage_stock": true,
+          "max_online": null,
+          "moving_average_cost": "0",
+          "name": "Small",
+          "online_id": null,
+          "opt1": "White",
+          "opt2": "Small",
+          "opt3": null,
+          "position": 1,
+          "product_id": 21824,
+          "reorder_point": null,
+          "retail_price": "90.0",
+          "sku": "DCP022-S",
+          "status": "active",
+          "stock_levels": {
+              "159": "-91.0"
+          },
+          "stock_on_hand": "-91.0",
+          "taxable": true,
+          "upc": null,
+          "vendor_code": null,
+          "wholesale_price": "22.5"
+      }
+  }
+</code></pre>
+
+<h4>Update a variant</h4>
+
+<h6>Request:</h6>
+
+<table>
+<tr>
+<th>Method</th>
+<th>Request URL</th>
+</tr>
+<tr>
+<td><strong>PUT</strong></td>
+<td><em><a href="https://api.tradegecko.com/variants/%7BVARIANT_ID%7D">https://api.tradegecko.com/variants/{VARIANT_ID}</a></em></td>
+</tr>
+</table><h6>Return:</h6>
+
+<pre><code>  Returns 204 status when the account gets updated successfully.
+</code></pre>
+
+<h4>Delete a variant</h4>
+
+<h6>Request:</h6>
+
+<table>
+<tr>
+<th>Method</th>
+<th>Request URL</th>
+</tr>
+<tr>
+<td><strong>DELETE</strong></td>
+<td><em><a href="https://api.tradegecko.com/variants/%7BVARIANT_ID%7D">https://api.tradegecko.com/variants/{VARIANT_ID}</a></em></td>
+</tr>
+</table><h6>Return:</h6>
+
+<pre><code>  Returns 204 status when the account gets updated successfully.
+</code></pre>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/tradegecko">tradegecko</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+
+  </body>
+</html>
