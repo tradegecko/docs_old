@@ -1,0 +1,23 @@
+---
+layout: default
+title: API Documentation
+---
+<div class="span9">
+  <h2>{{ page.title }}</h2>
+  <div>
+    <blockquote>
+    <strong>Disclaimer:</strong>
+    The TradeGecko API is currently undergoing development before its official release.
+    The software may contain defects or bugs and the primary purpose of this beta testing 
+    is to obtain customer feedback on software performance and the identification or defects.
+    </blockquote>
+  </div>
+</div>
+<div class="span3">
+  <ul class="posts nav nav-list">
+    <li class="nav-header">objects</li>
+    {% for post in site.categories.api %}
+      <li><a href="{{ post.url }}">{{ post.title }}</a></li>
+    {% endfor %}
+  </ul>
+</div>

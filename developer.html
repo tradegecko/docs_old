@@ -1,0 +1,30 @@
+---
+layout: default
+title: Developer
+---
+<div class="span9">
+  <h2>{{ page.title }}</h2>
+  <div>
+    <h3>
+      API Endpoint
+    </h3>
+    <p>
+      https://api.tradegecko.com/
+    </p>
+
+    <h3>
+      Versioning
+    </h3>
+    <p>
+      Header: &lt;Accept: application/vnd.tradegecko.v1+json&gt;
+    </p>
+  </div>
+</div>
+<div class="span3">
+  <ul class="posts nav nav-list">
+    <li class="nav-header">objects</li>
+    {% for post in site.categories.developer %}
+      <li><a href="{{ post.url }}">{{ post.title }}</a></li>
+    {% endfor %}
+  </ul>
+</div>

@@ -1,0 +1,4 @@
+name: Tradegecko
+pygments: true
+permalink: /:categories/:title
+markdown: rdiscount
