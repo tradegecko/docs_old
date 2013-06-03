@@ -16,3 +16,8 @@ In `config/initializers/tradegecko.rb`
     provider :tradegecko, ENV['TRADEGECKO_ID'], ENV['TRADEGECKO_SECRET']
   end
 {% endhighlight %}
+
+We've provided an example app in
+[https://tradegecko-example-app.herokuapp.com/](https://tradegecko-example-app.herokuapp.com/)
+ | ([source](https://github.com/tradegecko/tradegecko-example-app))
+
