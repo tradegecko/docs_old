@@ -2,9 +2,23 @@
 layout: default
 title: Developer
 ---
-<div class="span9">
+
+<div class="row">
   <h2>{{ page.title }}</h2>
-  <div>
+</div>
+
+<div class="row">
+  <div class="large-5 columns"
+    <h2>Objects</h2>
+    <ul class="side-nav">
+      {% for post in site.categories.developer %}
+        <li><a href="{{ post.url }}">{{ post.title }}</a></li>
+        <li class="divider"></li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <div class="large-7 columns">
     <h3>
       API Endpoint
     </h3>
@@ -19,12 +33,5 @@ title: Developer
       Header: &lt;Accept: application/vnd.tradegecko.v1+json&gt;
     </p>
   </div>
-</div>
-<div class="span3">
-  <ul class="posts nav nav-list">
-    <li class="nav-header">objects</li>
-    {% for post in site.categories.developer %}
-      <li><a href="{{ post.url }}">{{ post.title }}</a></li>
-    {% endfor %}
-  </ul>
+
 </div>

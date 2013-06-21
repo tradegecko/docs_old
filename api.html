@@ -2,22 +2,30 @@
 layout: default
 title: API Documentation
 ---
-<div class="span9">
+<div class="row">
   <h2>{{ page.title }}</h2>
-  <div>
-    <blockquote>
-      <strong>Disclaimer:</strong>
-      The TradeGecko API is currently undergoing development before its official release.
-      The software may contain defects or bugs and the primary purpose of this beta testing 
-      is to obtain customer feedback on software performance and the identification of defects.
-    </blockquote>
-  </div>
 </div>
-<div class="span3">
-  <ul class="posts nav nav-list">
-    <li class="nav-header">objects</li>
-    {% for post in site.categories.api %}
-      <li><a href="{{ post.url }}">{{ post.title }}</a></li>
-    {% endfor %}
-  </ul>
+
+<div class="row">
+  <div class="large-4 columns"
+    <h2>Objects</h2>
+    <ul class="side-nav">
+      {% for post in site.categories.api %}
+        <li><a href="{{ post.url }}">{{ post.title }}</a></li>
+        <li class="divider"></li>
+
+      {% endfor %}
+    </ul>
+  </div>
+  <div class="large-8 columns">
+    <div>
+      <blockquote>
+        <strong>Disclaimer:</strong>
+        The TradeGecko API is currently undergoing development before its official release.
+        The software may contain defects or bugs and the primary purpose of this beta testing
+        is to obtain customer feedback on software performance and the identification of defects.
+      </blockquote>
+    </div>
+  </div>
+
 </div>

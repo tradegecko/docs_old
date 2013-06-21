@@ -1,4 +1,27 @@
-name: Tradegecko
-pygments: true
 permalink: /:categories/:title
 markdown: rdiscount
+
+exclude: [".rvmrc", ".rbenv-version", "README.md", "Rakefile", "changelog.md", "script", "Gemfile", "Gemfile.lock", "config.ru", "Procfile", "newrelic.yml"]
+auto: true
+pygments: true
+
+paginate: 20
+# Themes are encouraged to use these universal variables
+# so be sure to set them if your theme uses them.
+#
+title :  TradeGecko
+tagline: Inventory and Sales Management API Platform
+author :
+  name : TradeGecko
+  email : hello@tradegecko.com
+  twitter : tradegecko
+
+# The production_url is only used when full-domain names are needed
+# such as sitemap.txt
+# Most places will/should use BASE_PATH to make the urls
+#
+# If you have set a CNAME (pages.github.com) set your custom domain here.
+# Else if you are pushing to username.github.com, replace with your username.
+# Finally if you are pushing to a GitHub project page, include the project name at the end.
+#
+production_url : http://docs.tradegecko.com
