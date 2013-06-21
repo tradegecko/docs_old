@@ -22,10 +22,26 @@
   line-height:20px;
 }
 
+h2 {
+  font-size:16pt;
+}
+
+p {
+  font-size:10pt;
+}
+
+code {
+  font-size:9pt;
+  word-wrap:break-word;
+}
 
 table {
   width: 100%;
   margin-bottom: 20px;
+}
+
+ul.side-nav li a {
+  font-size:10pt;
 }
 
 th, td {
@@ -49,6 +65,7 @@ th, td {
   color: rgba(201,208,214,0.6);
   padding-top:20px;
   margin-top:20px;
+  min-height: 80px;
 }
 
 #footer h3 {
