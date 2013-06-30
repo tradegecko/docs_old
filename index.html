@@ -1,41 +1,45 @@
 ---
 layout: default
-title: API Documentation
+title: The TradeGecko Inventory and Order Management Platform API
 ---
 <div class="row">
-  <h2>{{ page.title }}</h2>
+  <div class="large-12">
+    <h1 class="text-center">{{ page.title }}</h1>
+    <h2 class="subheader text-center">Build tools that solve problems for millions of wholesale and retail businesses worldwide.</h2>
+  </div>
 </div>
+<hr>
+<section class="row">
+  <p class="large-6 push-3 panel radius "><strong>Disclaimer:</strong>
+    The TradeGecko API is currently undergoing development before its official release.
+    The software may contain defects or bugs and the primary purpose of this beta testing
+    is to obtain customer feedback on software performance and the identification of defects.
+  </p>
+</section>
 
-<div class="row">
-  <div class="large-3 columns"
-    <h2>Objects</h2>
-    <ul class="side-nav">
-      {% for post in site.categories.api %}
-        <li><a href="{{ post.url }}">{{ post.title }}</a></li>
-        <li class="divider"></li>
-
-      {% endfor %}
-    </ul>
+<hr>
+<div class="row boxes">
+  <div class="large-4 columns">
+    <section class="panel">
+      <h3 class="text-center">Getting Started</h3>
+      <p>Learn the basics of registering and creating a TradeGecko application, how to authenticate and the quickest way to get started with the platform.</p>
+      <a href="/getting-started">Get started now</a>
+    </section>
   </div>
-  <div class="large-8 columns">
-    <div>
-    </div>
-    <div>
-      <p>The TradeGecko Platform API is a RESTful web API (RESTful web service) - implemented using HTTP and REST principles. We support the standard HTTP methods (e.g., GET, PUT, POST, or DELETE) and all data is presented in JSON format. The API can be understood by off-the-shelf HTTP clients, and we provide libraries for specific languages.</p>
-      <p><blockquote>
-        <strong>Disclaimer:</strong>
-        The TradeGecko API is currently undergoing development before its official release.
-        The software may contain defects or bugs and the primary purpose of this beta testing
-        is to obtain customer feedback on software performance and the identification of defects.
-       </blockquote>
-      </p>
-      <p>
-      For authentication we currently support OAuth 2 - based on version 22 of the OAuth specification. If you are developing on the Ruby on Rails development stack there is an open source omni-auth authentication strategy <a href="https://github.com/tradegecko/omniauth-tradegecko">available here.</a></p>
-
-      <p>We dog-food the TradeGecko API internally as the TradeGecko web application is developed as an Ember.js client-side Javascript application that talks to our REST API (application programming interface).</p>
-    </div>
+  <div class="large-4 columns">
+    <section class="panel">
+     <h3 class="text-center">The Documentation</h3>
+     <p>Want to develop a TradeGecko app or integration? Check out our API documentation and learn the ins and outs of using the API in your project.</p>
+     <a href="/documentation">Read the documentation</a>
+   </section>
   </div>
-
+  <div class="large-4 columns">
+    <section class="panel">
+      <h3 class="text-center">Resources</h3>
+      <p>We've created some example applications, authentication strategies and code examples to get you started building with the TradeGecko platform.</p>
+      <a href="/resources">Check out the resources</a>
+    </section>
+  </div>
 </div>
 
 

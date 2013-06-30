@@ -1,3 +1,24 @@
+h1, h2, h3, h4 {
+  font-weight:lighter;
+}
+
+h1 {
+  font-size:22pt;
+}
+
+h2 {
+  font-size:18pt;
+}
+
+h3 {
+  font-size:14pt;
+}
+
+
+.text-center {
+  text-align: center;
+}
+
 .top-bar {
   background:#7bdb3c;
   color:white;
@@ -7,9 +28,12 @@
   background:#7bdb3c;
 }
 
+.top-bar a {
+  text-shadow:0px 1px 1px rgba(0,0,0,.3);
+}
+
 .top-bar-section ul li > a {
   background:#7bdb3c;
-  text-shadow:0px 1px 1px rgba(0,0,0,0.2);
 }
 
 .top-bar-section > ul > .divider {
@@ -56,13 +80,19 @@ th, td {
   padding-top:60px;
 }
 
+.callout {
+
+}
+
+section#main-content {
+  min-height: 580px;
+}
 
 #footer {
-  background: #2D3033;
   font-weight: 300;
   font-size: 9pt;
   text-align: left;
-  color: rgba(201,208,214,0.6);
+  color: #333;
   padding-top:20px;
   margin-top:20px;
   min-height: 80px;
@@ -81,13 +111,6 @@ th, td {
 #footer ul li {
   padding: 5px 0;
   margin: 0 20px 0 0;
-}
-
-#footer ul li a {
-  color: #949CA7;
-  font-weight: 300;
-  font-size: 9pt;
-  text-shadow: 0 1px 1px #2D3033;
 }
 
 #footer ul li a:hover {
