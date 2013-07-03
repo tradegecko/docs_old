@@ -120,6 +120,7 @@ section#main-content {
 .icon {
   font-family: 'Pictos Custom' !important;
   -webkit-font-smoothing: antialiased;
-  font-size:34pt;
+  font-size:28pt;
+  text-align: center;
 }
 
