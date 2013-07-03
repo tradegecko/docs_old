@@ -54,3 +54,14 @@
 [06/30/13 22:12:06 +0800 Camerons-MacBook-Air.local (39849)] WARN : No license key found in newrelic.yml config. This often means your newrelic.yml is missing a section for the running environment 'development'
 [06/30/13 22:12:06 +0800 Camerons-MacBook-Air.local (39849)] INFO : Installing Net instrumentation
 [06/30/13 22:12:06 +0800 Camerons-MacBook-Air.local (39849)] INFO : Finished instrumentation
+[06/30/13 22:19:59 +0800 Camerons-MacBook-Air.local (40453)] INFO : Starting the New Relic agent in "development" environment.
+[06/30/13 22:19:59 +0800 Camerons-MacBook-Air.local (40453)] INFO : To prevent agent startup add a NEWRELIC_ENABLE=false environment variable or modify the "development" section of your newrelic.yml.
+[06/30/13 22:19:59 +0800 Camerons-MacBook-Air.local (40453)] INFO : Reading configuration from 
+[06/30/13 22:19:59 +0800 Camerons-MacBook-Air.local (40453)] ERROR : Unable to read configuration file : can't convert nil into String
+[06/30/13 22:19:59 +0800 Camerons-MacBook-Air.local (40453)] INFO : Disabling the Request Sampler.
+[06/30/13 22:19:59 +0800 Camerons-MacBook-Air.local (40453)] INFO : Environment: development
+[06/30/13 22:19:59 +0800 Camerons-MacBook-Air.local (40453)] INFO : No known dispatcher detected.
+[06/30/13 22:19:59 +0800 Camerons-MacBook-Air.local (40453)] INFO : Application: development
+[06/30/13 22:19:59 +0800 Camerons-MacBook-Air.local (40453)] WARN : No license key found in newrelic.yml config. This often means your newrelic.yml is missing a section for the running environment 'development'
+[06/30/13 22:19:59 +0800 Camerons-MacBook-Air.local (40453)] INFO : Installing Net instrumentation
+[06/30/13 22:19:59 +0800 Camerons-MacBook-Air.local (40453)] INFO : Finished instrumentation
