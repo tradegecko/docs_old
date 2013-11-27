@@ -18,8 +18,6 @@ Attribute                      | Type          | Description
 **label**                      | String        |                               
 **freeform**                   | Boolean       |                               
 **base_price**                 | String        |                               
-**extra_cost_value**           | String        |                               
-**image_url**                  | String        |                               
 
 
 ####   Retrieve a specific purchase order line item
@@ -43,9 +41,7 @@ Method     | Request URL
               price: "20.0",
               label: null,
               freeform: false,
-              base_price: "20.0",
-              extra_cost_value: "12.5",
-              image_url: null
+              base_price: "20.0"
           }
       }
 
@@ -70,9 +66,7 @@ Method     | Request URL
               price: "20.0",
               label: null,
               freeform: false,
-              base_price: "20.0",
-              extra_cost_value: "12.5",
-              image_url: null
+              base_price: "20.0"
           }
       }
 
