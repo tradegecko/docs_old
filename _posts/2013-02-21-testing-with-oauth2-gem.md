@@ -45,13 +45,25 @@ With this unique code, you will now be able to request the access token.
 
 ### Getting an access token
 
-To request an access token, type:
+Tradegecko API currently allows [Authorization Code](http://tools.ietf.org/html/rfc6749#section-1.3.1) and 
+[Resource Owner Password Credentials](http://tools.ietf.org/html/rfc6749#section-1.3.3) authentication grant types.
+> For security reasons, the use of Resource Owner Password Credentials is limited only to the account who created the application.
+
+**Authorization Code flow**
 
 {% highlight ruby %}
   code = "..." # code you got in the redirect uri
   token = client.auth_code.get_token(code, :redirect_uri => redirect_uri)
+  # => <#OAuth2::AccessToken ...>               
+{% endhighlight %}  
+
+**Resource Owner Password Credentials flow**
+
+{% highlight ruby %}
+  token = client.password.get_token('username', 'password')
   # => <#OAuth2::AccessToken ...>
 {% endhighlight %}
+
 You now have access to the TradegGecko API.
 
 ### Making your first TradeGecko API request 
