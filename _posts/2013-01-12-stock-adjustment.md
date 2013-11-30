@@ -68,13 +68,13 @@ Method     | Request URL
               "quantity": -10, 
               "variant_id": 83375
             },
+            {
               "quantity": 5, 
               "variant_id": 83376
-            { 
             }
-          ],
+          ]
         }
-        }'
+      }'
 
 ##### Sample Response
 
