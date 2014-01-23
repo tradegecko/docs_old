@@ -9,20 +9,29 @@ title: Changelog
 <br />
 
 <div class="row">
+  <h6>Jan 23 2014</h6>
+  <ul class="large-12 columns">
+    <li><a href="api/order/">Order</a> `source_id` attribute returns the internal id of the OAuth Application</li>
+    <li><strong>Deprecation: </strong><a href="api/order/">Order</a> `url` attribute is now `source_url`</li>
+    <li><strong>Deprecation: </strong><a href="api/order/">Order</a> manually specified `source` attribute has been removed and is replaced by the read-only `source_id`</li>
+  </ul>
+</div>
+
+<div class="row">
   <h6>Jan 22 2014</h6>
   <ul class="large-12 columns">
-    <li><strong>Deprecation warning: </strong><a href="api/contact/">Contact</a> 'phone' attribute is now 'phone_number'</li>
+    <li><strong>Deprecation: </strong><a href="api/contact/">Contact</a> `phone` attribute is now `phone_number`</li>
   </ul>
 </div>
 
 <div class="row">
   <h6>Jan 16 2014</h6>
   <ul class="large-12 columns">
-    <li><a href="api/order/">Order</a> now has 'ship_at' attribute. </li>
+    <li><a href="api/order/">Order</a> now has `ship_at` attribute. </li>
     <li>
       <strong>Deprecation warning: </strong>
-      <a href="api/order/">Order</a> 'due_at' attribute is deprecated and for backwards compatibility,
-      'due_at' parameters passed on the Orders endpoint will be saved as 'ship_at'.
+      <a href="api/order/">Order</a> `due_at` attribute is deprecated and for backwards compatibility,
+      in the interim `due_at` is an alias for `ship_at`.
     </li>
   </ul>
 </div>
