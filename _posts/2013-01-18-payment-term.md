@@ -10,6 +10,7 @@ Attribute                      | Type          | Description
 **id**                         | Integer       |  A unique identifier for the payment term            
 **name**                       | String        |  Name of the payment term              
 **due_in_days**                | Integer       |                 
+**status**                     | String        |                 
 
 
 ####   Retrieve list of payment terms
@@ -26,17 +27,20 @@ Method     | Request URL
               {
                   id: 12,
                   name: "NET30",
-                  due_in_days: 30
+                  due_in_days: 30,
+                  status: "active"
               },
               {
                   id: 11,
                   name: "NET10",
-                  due_in_days: 10
+                  due_in_days: 10,
+                  status: "active"
               },
               {
                   id: 10,
                   name: "Cash on Delivery",
-                  due_in_days: 0
+                  due_in_days: 0,
+                  status: "active"
               }
          ]
       }
@@ -54,7 +58,8 @@ Method     | Request URL
           payment_term: {
               id: 12,
               name: "NET30",
-              due_in_days: 30
+              due_in_days: 30,
+              status: "active"
           }
       }
 
@@ -71,7 +76,8 @@ Method     | Request URL
           payment_term: {
               id: 12,
               name: "NET30",
-              due_in_days: 30
+              due_in_days: 30,
+              status: "active"
           }
       }
 
@@ -85,3 +91,13 @@ Method     | Request URL
 
 ###### Return:
       Returns 204 status when the payment term gets updated successfully. 
+
+####   Delete a payment term
+
+######     Request:
+Method     | Request URL   
+-----------| ------------- 
+**DELETE**    | *https://api.tradegecko.com/payment_terms/{PAYMENT_TERM_ID}*
+
+###### Return:
+      Returns 204 status when the payment term gets deleted successfully. 
