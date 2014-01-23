@@ -3,7 +3,8 @@ layout: developer
 category: developer
 ---
   In order to use the TradeGecko API, you must first have a TradeGecko 
-  account, you can register a new application at http://go.tradegecko.com/oauth/applications. 
+  account, you can register a new application at 
+  [https://go.tradegecko.com/oauth/applications](https://go.tradegecko.com/oauth/applications).
   After successfully creating a new application, you will be given a set of 2
   unique keys: 
 

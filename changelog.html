@@ -29,9 +29,25 @@ title: Changelog
   <ul class="large-12 columns">
     <li><a href="api/order/">Order</a> now has `ship_at` attribute. </li>
     <li>
-      <strong>Deprecation warning: </strong>
+      <strong>Deprecation: </strong>
       <a href="api/order/">Order</a> `due_at` attribute is deprecated and for backwards compatibility,
       in the interim `due_at` is an alias for `ship_at`.
+    </li>
+    <li>
+      Consumers can now register multiple redirect URIs.
+      Specify the one you want to use as a parameter 
+      in your call to https://api.tradegecko.com/oauth/authorize.
+    </li>
+  </ul>
+</div>
+
+<div class="row">
+  <h6>Jan 14 2014</h6>
+  <ul class="large-12 columns">
+    <li>
+      TradeGecko Applications now has `settings_url` and `icon` attributes.
+      Visit <a href="http://go.tradegecko.com/oauth/applications">http://go.tradegecko.com/oauth/applications</a>
+      to update your application details.
     </li>
   </ul>
 </div>
