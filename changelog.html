@@ -9,6 +9,14 @@ title: Changelog
 <br />
 
 <div class="row">
+  <h6>Feb 17 2014</h6>
+  <ul class="large-12 columns">
+    <li><strong>Deprecation: </strong><a href="api/order/">Order</a> `cached_total` attribute is now `total`</li>
+    <li><strong>Deprecation: </strong><a href="api/purchase_order/">PurchaseOrder</a> `cached_total` attribute is now `total`</li>
+  </ul>
+</div>
+
+<div class="row">
   <h6>Jan 23 2014</h6>
   <ul class="large-12 columns">
     <li><a href="api/order/">Order</a> `source_id` attribute returns the internal id of the OAuth Application</li>
@@ -35,7 +43,7 @@ title: Changelog
     </li>
     <li>
       Consumers can now register multiple redirect URIs.
-      Specify the one you want to use as a parameter 
+      Specify the one you want to use as a parameter
       in your call to https://api.tradegecko.com/oauth/authorize.
     </li>
   </ul>
