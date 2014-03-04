@@ -50,7 +50,7 @@ Method     | Request URL
 ######     Request:
 Method     | Request URL   
 -----------| ------------- 
-**POST**   | *https://api.tradegecko.com/purchase_order_line_item/*
+**POST**   | *https://api.tradegecko.com/purchase_order_line_items/*
 
 ##### Sample Response
 

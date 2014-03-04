@@ -40,7 +40,7 @@ Method     | Request URL
 ######     Request:
 Method     | Request URL   
 -----------| ------------- 
-**POST**   | *https://api.tradegecko.com/stock_transfer_line_item/*
+**POST**   | *https://api.tradegecko.com/stock_transfer_line_items/*
 
 ##### Sample Response
 

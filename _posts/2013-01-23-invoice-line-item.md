@@ -38,7 +38,7 @@ Method     | Request URL
 ######     Request:
 Method     | Request URL   
 -----------| ------------- 
-**POST**   | *https://api.tradegecko.com/invoice_line_item/*
+**POST**   | *https://api.tradegecko.com/invoice_line_items/*
 
 ##### Sample Response
 
