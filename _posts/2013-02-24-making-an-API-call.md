@@ -9,4 +9,4 @@ category: developer
 
 ##### Sample request (cURL)
 
-      curl -H "Authorization: Bearer <ACCESS_TOKEN>" http://api.tradegecko.com/accounts
+      curl -H "Authorization: Bearer <ACCESS_TOKEN>" https://api.tradegecko.com/accounts

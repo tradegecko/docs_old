@@ -13,7 +13,7 @@ category: developer
 
 {% highlight bash %}
   curl -H "Content-type: application/json" -X POST
-  http://api.tradegecko.com/oauth/token -d '{"client_id": "9eb02720054",
+  https://api.tradegecko.com/oauth/token -d '{"client_id": "9eb02720054",
   "client_secret": "b1d41094b83",
   "redirect_uri": "http://my.application.com/auth/callback", "refresh_token": "9582f8a45255",
   "grant_type": "refresh_token"}'
