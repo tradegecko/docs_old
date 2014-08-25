@@ -25,7 +25,7 @@ Method     | Request URL
                   "position": null,
                   "price": "10.0",
                   "quantity": "1.0",
-                  "tax_rate": "15.0",
+                  "tax_rate_override": "15.0",
                   "variant_id": 1018
               },
               {
@@ -39,7 +39,7 @@ Method     | Request URL
                   "position": null,
                   "price": "24.0",
                   "quantity": "3.0",
-                  "tax_rate": "15.0",
+                  "tax_rate_override": "15.0",
                   "variant_id": 1026
               }
           ]
@@ -66,7 +66,7 @@ Method     | Request URL
               "position": null,
               "price": "24.0",
               "quantity": "3.0",
-              "tax_rate": "15.0",
+              "tax_rate_override": "15.0",
               "variant_id": 1026
           }
       }
@@ -92,7 +92,7 @@ Method     | Request URL
               "position": null,
               "price": "24.0",
               "quantity": "3.0",
-              "tax_rate": "15.0",
+              "tax_rate_override": "15.0",
               "variant_id": 1026
           }
       }

@@ -22,8 +22,8 @@ category: developer
     issued_at: "21-02-2014",
     source_url: "my-shop.example.com/orders/12345"
     order_line_items: [
-      { variant_id: 14, quantity: 1, price: "12.40", tax_rate: "12.5" }
-      { variant_id: 15, quantity: 2, price: "40.90", tax_rate: "12.5" }
+      { variant_id: 14, quantity: 1, price: "12.40", tax_type_id: 1 }
+      { variant_id: 15, quantity: 2, price: "40.90", tax_type_id: 2 }
     ]
   }
 }

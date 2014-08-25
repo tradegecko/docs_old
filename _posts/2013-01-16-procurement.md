@@ -47,7 +47,7 @@ Method     | Request URL
                   "procurement_id": 51,
                   "purchase_order_id": 127,
                   "quantity": "11.0",
-                  "tax_rate": "15.0",
+                  "tax_rate_override": "15.0",
                   "variant_id": 13410
               },
               {
@@ -61,7 +61,7 @@ Method     | Request URL
                   "procurement_id": 18,
                   "purchase_order_id": 127,
                   "quantity": "20.0",
-                  "tax_rate": "15.0",
+                  "tax_rate_override": "15.0",
                   "variant_id": 1996
               }
           ]
@@ -99,7 +99,7 @@ Method     | Request URL
                   "procurement_id": 51,
                   "purchase_order_id": 127,
                   "quantity": "11.0",
-                  "tax_rate": "15.0",
+                  "tax_rate_override": "15.0",
                   "variant_id": 13410
               }
           ]

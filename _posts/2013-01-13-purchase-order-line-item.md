@@ -12,8 +12,9 @@ Attribute                      | Type          | Description
 **variant_id**                 | Integer       |             
 **procurement_id**             | Integer       |  
 **quantity**                   | String        |                               
-**position**                   | Integer       |                               
-**tax_rate**                   | String        |                               
+**position**                   | Integer       |         
+**tax_type_id**                | Integer       | ID of the tax type                      
+**tax_rate_override**          | String        | Optional tax rate override                              
 **price**                      | String        |                               
 **label**                      | String        |                               
 **freeform**                   | Boolean       |                               
@@ -37,7 +38,7 @@ Method     | Request URL
               procurement_id: 1439,
               quantity: "2.0",
               position: 0,
-              tax_rate: "6.0",
+              tax_rate_override: "6.0",
               price: "20.0",
               label: null,
               freeform: false,
@@ -62,7 +63,7 @@ Method     | Request URL
               procurement_id: 1439,
               quantity: "2.0",
               position: 0,
-              tax_rate: "6.0",
+              tax_rate_override: "6.0",
               price: "20.0",
               label: null,
               freeform: false,
