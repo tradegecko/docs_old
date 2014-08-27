@@ -2,8 +2,7 @@ permalink: /:categories/:title
 markdown: rdiscount
 
 exclude: [".rvmrc", ".rbenv-version", "README.md", "Rakefile", "changelog.md", "script", "Gemfile", "Gemfile.lock", "config.ru", "Procfile", "newrelic.yml"]
-auto: true
-pygments: true
+higlighter: true
 
 paginate: 20
 # Themes are encouraged to use these universal variables
