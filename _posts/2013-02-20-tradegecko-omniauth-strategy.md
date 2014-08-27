@@ -12,12 +12,11 @@ that standardizes multi-provider authentication for web applications.
 In `config/initializers/tradegecko.rb`
 
 {% highlight ruby %}
-  use OmniAuth::Builder do
-    provider :tradegecko, ENV['TRADEGECKO_ID'], ENV['TRADEGECKO_SECRET']
-  end
+use OmniAuth::Builder do
+  provider :tradegecko, ENV['TRADEGECKO_ID'], ENV['TRADEGECKO_SECRET']
+end
 {% endhighlight %}
 
 We've provided an example app in
 [https://tradegecko-example-app.herokuapp.com/](https://tradegecko-example-app.herokuapp.com/)
  | ([source](https://github.com/tradegecko/tradegecko-example-app))
-

@@ -8,5 +8,6 @@ category: developer
    header.
 
 ##### Sample request (cURL)
-
-      curl -H "Authorization: Bearer <ACCESS_TOKEN>" https://api.tradegecko.com/accounts
+{% highlight bash %}
+curl -H "Authorization: Bearer <ACCESS_TOKEN>" https://api.tradegecko.com/accounts
+{% endhighlight %}
