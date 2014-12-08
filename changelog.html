@@ -9,6 +9,21 @@ title: Changelog
 <br />
 
 <div class="row">
+  <h6>Dec 8 2014</h6>
+  <ul class="large-12 columns">
+    <li>
+      <strong>Breaking Change</strong>
+      <a href="api/variant/">Variant</a>
+      End point no longer accepts/emits reorder_point on variant level. Instead, each item in locations array can have its own reorder_point which allows per-location reorder point.
+    </li>
+    <li>
+      <a href="api/variant/">Variant</a>
+      locations array items can take bin_location elements to define bin_location of the variant in the respective warehouse.
+    </li>
+  </ul>
+</div>
+
+<div class="row">
   <h6>Jul 25 2014</h6>
   <ul class="large-12 columns">
     <li><a href="api/order/">Order</a> endpoint 'default_price_type_id' is deprecated in favour of 'default_price_list_id'.</li>
