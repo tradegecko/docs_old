@@ -6,28 +6,28 @@ category: api
 
 Attribute                        | Type          | Description
 -------------------------------- | ------------- | ------------
-**id**                           | Integer       | A unique identifier for the stock transfer      
-**adjustment_number**            | String        |                                          
-**status**                       | String        |                                          
-**created_at**                   | String        |                                          
-**updated_at**                   | String        |                                          
-**transacted_at_at**             | String        |                                          
-**notes**                        | String        |                                          
-**source_location_id**           | Integer       |                                          
-**source_destination_id**        | Integer       |                                          
-**cached_quantity**              | String        |                                          
-**stock_transfer_line_item_ids** | Array         |                                          
+**id**                           | Integer       | A unique identifier for the stock transfer
+**adjustment_number**            | String        |
+**status**                       | String        |
+**created_at**                   | String        |
+**updated_at**                   | String        |
+**transacted_at_at**             | String        |
+**notes**                        | String        |
+**source_location_id**           | Integer       |
+**source_destination_id**        | Integer       |
+**cached_quantity**              | String        |
+**stock_transfer_line_item_ids** | Array         |
 
 ####   Retrieve list of stock transfers
 
 ###### Request:
-Method     | Request URL   
------------| ------------- 
-**GET**    | *https://api.tradegecko.com/stock transfers/*
+Method     | Request URL
+-----------| -------------
+**GET**    | *https://api.tradegecko.com/stock_transfers/*
 
 ##### Sample Request
 
-      curl -X GET -H "Content-type: application/json" -H "Authorization: Bearer <ACCESS_TOKEN>" 
+      curl -X GET -H "Content-type: application/json" -H "Authorization: Bearer <ACCESS_TOKEN>"
       https://api.tradegecko.com/stock_transfers
 
 ##### Sample response
@@ -66,13 +66,13 @@ Method     | Request URL
 ####  Retrieve a specific stock transfer item
 
 ###### Request:
-Method     | Request URL   
------------| ------------- 
+Method     | Request URL
+-----------| -------------
 **GET**    | *https://api.tradegecko.com/stock_transfers/{STOCK_TRANSFER_ID}*
 
 ##### Sample Request
 
-      curl -X GET -H "Content-type: application/json" -H "Authorization: Bearer <ACCESS_TOKEN>" 
+      curl -X GET -H "Content-type: application/json" -H "Authorization: Bearer <ACCESS_TOKEN>"
       https://api.tradegecko.com/stock_transfers/1
 
 ##### Sample response
@@ -95,8 +95,8 @@ Method     | Request URL
 
 #### Create a new stock transfer
 
-Method     | Request URL   
------------| ------------- 
+Method     | Request URL
+-----------| -------------
 **POST**   | *https://api.tradegecko.com/stock_transfers/*
 
 
@@ -119,8 +119,8 @@ Method     | Request URL
       }
 
 #### Update a stock transfer
-Method     | Request URL   
------------| ------------- 
+Method     | Request URL
+-----------| -------------
 **PUT**    | *https://api.tradegecko.com/stock_transfers/{STOCK_TRANSFER_ID}*
 
 
@@ -146,9 +146,9 @@ Method     | Request URL
 ####   Delete a stock transfer
 
 ######     Request:
-Method     | Request URL   
------------| ------------- 
+Method     | Request URL
+-----------| -------------
 **DELETE** | *https://api.tradegecko.com/stock_transfers/{STOCK_TRANSFER_ID}*
 
 ###### Return:
-      Returns 204 status when the stock transfer gets deleted successfully. 
+      Returns 204 status when the stock transfer gets deleted successfully.
