@@ -6,8 +6,8 @@ category: api
 ####   Retrieve list of stock adjustments
 
 ######     Request:
-Method     | Request URL   
------------| ------------- 
+Method     | Request URL
+-----------| -------------
 **GET**    | *https://api.tradegecko.com/stock_adjustments/*
 
 ##### Sample Response
@@ -40,36 +40,36 @@ Method     | Request URL
 ####   Create a new stock adjustment
 
 ######     Request:
-Method     | Request URL   
------------| ------------- 
+Method     | Request URL
+-----------| -------------
 **POST**   | *https://api.tradegecko.com/stock_adjustments*
 
 ######     Arguments:
-      adjustment_number: 
-        A unique identifer. Will be auto-generated if not provided. See https://api.tradegecko.com/stock_adjustments/available_identifiers 
+      adjustment_number:
+        A unique identifer. Will be auto-generated if not provided. See https://api.tradegecko.com/stock_adjustments/available_identifiers
       notes: optional
       reason: required
-        Category the adjustment falls under. E.g. "supplier", "customer, "damaged", "shrinkage", "promotion"
+        Category the adjustment falls under. E.g. "supplier", "customer, "damaged", "shrinkage", "promotion", "production"
       stock_adjustment_line_items: optional
         You can optionally include line items in the create request.
       stock_location_id: required
         The id of the stock location from where this stock is being updated
 
 ##### Sample Request
-      curl -X POST -H "Content-type: application/json" -H "Authorization: Bearer <ACCESS_TOKEN>" 
+      curl -X POST -H "Content-type: application/json" -H "Authorization: Bearer <ACCESS_TOKEN>"
       https://api.tradegecko.com/stock_adjustments/ -d '{
         "stock_adjustment": {
           "adjustment_number": "SA0001",
           "notes": "EOY 2013 Stocktake",
           "reason": "shrinkage",
-          "stock_location_id": 17003, 
+          "stock_location_id": 17003,
           "stock_adjustment_line_items": [
-            { 
-              "quantity": -10, 
+            {
+              "quantity": -10,
               "variant_id": 83375
             },
             {
-              "quantity": 5, 
+              "quantity": 5,
               "variant_id": 83376
             }
           ]
@@ -104,7 +104,7 @@ Method     | Request URL
                   76,
                   77
               ],
-              "stock_location_id": 17003, 
+              "stock_location_id": 17003,
               "updated_at": "2013-05-22T00:22:26Z"
           }
       }
