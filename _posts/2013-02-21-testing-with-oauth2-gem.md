@@ -43,7 +43,7 @@ With this unique code, you will now be able to request the access token.
 
 ### Getting an access token
 
-Tradegecko API currently allows [Authorization Code](http://tools.ietf.org/html/rfc6749#section-1.3.1) and
+TradeGecko API currently allows [Authorization Code](http://tools.ietf.org/html/rfc6749#section-1.3.1) and
 [Resource Owner Password Credentials](http://tools.ietf.org/html/rfc6749#section-1.3.3) authentication grant types.
 > For security reasons, the use of Resource Owner Password Credentials is limited only to the account who created the application.
 
@@ -72,7 +72,7 @@ irb(main):012:0> JSON.parse(response.body)
 => { "accounts": [{ "name": "tradegecko", ... }] }
 {% endhighlight %}
 
-Congratulations! You just made your first request to the Tradegecko API.
+Congratulations! You just made your first request to the TradeGecko API.
 
 ### Request with additional parameters
 
