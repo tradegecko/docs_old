@@ -16,5 +16,4 @@ Header                     | Description
 
 If you go over this limit the API will return a response with a status code of 429 until the reset time.
 
-N.B. The API limit is counted against the combination of application and account, so if your application is serving multiple accounts eaoh account will have it's own quota.
-
+N.B. The API limit is counted against the combination of application and account, so if your application is serving multiple accounts each account will have it's own quota.
